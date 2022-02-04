@@ -1,0 +1,59 @@
+@import '../../assets/scss/helpers/helpers.scss';
+
+.wrapper {
+  background-color: rgba(0, 0, 0, 0.2);
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  overflow: auto;
+  z-index: 300;
+}
+
+.modal {
+  background-color: #000;
+  padding: 48px;
+  position: relative;
+  max-width: 840px;
+  margin: 200px auto;
+  word-break: break-word;
+  background-image: url('/images/metaverse/modal_texture.png');
+  background-size: 100%;
+  border: 1px solid #ffffff;
+  box-sizing: border-box;
+  box-shadow: 0px 4px 30px 10px #ffffff;
+
+  & p,
+  & span,
+  & button,
+  & a {
+    color: white !important;
+  }
+}
+
+.closeIcon {
+  @include reset-button();
+  @include active();
+  position: absolute;
+  right: 32px;
+  top: 32px;
+  font-size: 30px;
+}
+
+.title {
+  font-size: 2rem;
+  line-height: 24px;
+  font-weight: bold;
+  margin-bottom: 44px;
+}
+
+.modalBodyText {
+  font-size: 1rem;
+  line-height: 24px;
+  font-weight: 400;
+
+  &:not(:last-child) {
+    margin-bottom: 18px;
+  }
+}

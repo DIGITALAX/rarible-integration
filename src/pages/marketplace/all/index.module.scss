@@ -1,0 +1,35 @@
+@import "../../../assets/scss/helpers/grid.scss";
+
+.wrapper {
+  min-height: 600px;
+  background-color: #000;
+
+  .loadingWrapper {
+    padding-top: 10rem;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .browseRarity {
+    position: absolute;
+    right: 2rem;
+    bottom: 0rem;
+    padding: 0 1rem;
+    color: white;
+    font-family: Gilroy;
+    font-style: normal;
+    font-weight: 800;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    background-color: #a500fd;
+    display: flex;
+    align-items: center;
+
+    img {
+      width: 3rem;
+      margin-left: 0.5rem;
+    }
+  }
+}

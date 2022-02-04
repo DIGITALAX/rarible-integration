@@ -1,0 +1,350 @@
+@import '.../../../assets/scss/helpers/grid.scss';
+
+.wrapper {
+  background-color: black;
+  background-size: 100%;
+  background-repeat: repeat;
+  min-height: 600px;
+  color: white;
+  width: 100%;
+  font-family: 'Inter';
+
+  .loadingWrapper {
+    padding-top: 10rem;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .homeHeroSection {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0rem 2.5rem;
+    padding-top: 10rem;
+    padding-bottom: 7.5rem;
+
+    @include md-width {
+      flex-direction: row;
+      padding: 0rem 7.5rem;
+      padding-top: 10rem;
+      padding-bottom: 7.5rem;
+    }
+
+    .leftWrapper {
+      width: 100%;
+
+      .title {
+        font-family: Orbitron;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 40px;
+        line-height: 125%;
+
+        color: #ffffff;
+        margin-bottom: 1rem;
+      }
+
+      p {
+        font-family: Gilroy;
+        font-size: 18px;
+        line-height: 200%;
+        a {
+          color: white;
+          text-decoration: underline;
+        }
+      }
+
+      @include md-width {
+        width: 50%;
+        margin-right: 2rem;
+        .title {
+          font-size: 40px;
+        }
+      }
+
+      @include xxl-width {
+        .title {
+          font-size: 4.2vw;
+        }
+
+        p {
+          font-size: 1.3vw;
+        }
+      }
+    }
+
+    .actionsWrapper {
+      margin-top: 2rem;
+      flex-grow: 1;
+
+      @media (max-width: 576px) {
+        width: 100%;
+      }
+
+      @include sm-width {
+        margin-top: 0;
+      }
+
+      .linkWrapper {
+        @media (max-width: 576px) {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+    }
+
+    .heroSectionLink {
+      color: white;
+      font-family: Poppins;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 1vw;
+      line-height: 1.75vw;
+      color: #ffffff;
+      text-align: left;
+      margin-top: 1rem;
+      margin-bottom: 2rem;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      margin-right: 2rem;
+
+      &:hover {
+        text-decoration: underline;
+      }
+
+      @media (max-width: 576px) {
+        margin-bottom: 0.5rem;
+        margin-top: 0.5rem;
+        font-size: 1.5rem;
+        line-height: 1.75rem;
+      }
+
+      @include md-width {
+        margin-top: 0;
+      }
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+
+    .filtersWrapper {
+      padding-top: 3rem;
+    }
+  }
+
+  .marketplaceTabs {
+    width: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: auto;
+
+    @media (max-width: 576px) {
+      width: calc(100% - 2rem);
+
+      button {
+        font-size: 16px !important;
+      }
+    }
+
+    border-bottom: 2px solid white;
+
+    button {
+      width: 50%;
+      padding: 1rem 0;
+      border: none;
+      color: white;
+      outline: none;
+      background: transparent;
+      font-family: Gilroy;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 2vw;
+      line-height: 2.5vw;
+      text-align: center;
+
+      color: #ffffff;
+    }
+
+    .active {
+      font-weight: 800;
+    }
+  }
+
+  .collectionsWrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    background-color: transparent;
+    column-gap: 5rem;
+    row-gap: 10rem;
+    padding: 7rem 2rem;
+
+    @include lg-width {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .heroSection {
+    position: relative;
+    text-align: center;
+    overflow: hidden;
+    .heroSectionLink {
+      color: white;
+      position: absolute;
+      top: 38%;
+      left: 0;
+      font-family: Poppins;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 27px;
+      line-height: 40px;
+      color: #ffffff;
+      margin-right: 20px;
+      color: #ffffff;
+      width: 210px;
+      text-align: left;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: scale(1.2);
+      }
+    }
+
+    @include xs-width {
+      margin-top: 75px;
+    }
+
+    .amongus,
+    .minecraft,
+    .roblox {
+      position: absolute;
+      right: 0;
+      background-color: black;
+      width: 210px;
+      padding: 1rem;
+      font-family: Trans America;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-style: italic;
+      text-shadow: 1px 1px 9px #57b5e9, 1px 1px 6px #57b5e9;
+      color: white;
+
+      &:hover {
+        width: 230px;
+        transition: all 0.3s ease;
+      }
+
+      @media (max-width: 990px) {
+        display: none;
+      }
+    }
+
+    .amongus {
+      top: 100px;
+    }
+
+    .minecraft {
+      top: 200px;
+    }
+
+    .roblox {
+      top: 300px;
+    }
+
+    .heroImage {
+      position: relative;
+      z-index: 10;
+      width: 70%;
+      margin-top: 13.5rem;
+      margin-bottom: 7.5rem;
+
+      @media (max-width: 786px) {
+        margin-top: 7.5rem;
+      }
+    }
+
+    .homeHeroBar {
+      background-color: black !important;
+    }
+
+    .heroBackImage {
+      width: 100%;
+      position: absolute;
+      z-index: 0;
+      top: 0;
+      left: 0;
+    }
+    .designer {
+      position: absolute;
+      bottom: 120px;
+      left: 80px;
+      font-family: Poppins;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 23px;
+      display: flex;
+      justify-content: flex-start;
+
+      a {
+        margin-right: 20px;
+        color: #ffffff;
+      }
+    }
+    @media (max-width: 768px) {
+      .designer {
+        bottom: 50px !important;
+        left: 28px !important;
+        a {
+          line-height: 16px;
+          font-size: 18px;
+        }
+      }
+    }
+    @media (max-width: 640px) {
+      margin-top: -1px !important;
+    }
+  }
+
+  marquee {
+    margin: auto;
+    background: white;
+    margin: -5px 0;
+
+    .bottomImageText {
+      height: 70px;
+    }
+  }
+  @media (max-width: 1400px) {
+    marquee {
+      img {
+        height: 50px !important;
+      }
+    }
+  }
+  @media (max-width: 768px) {
+    .fashionWeekLink {
+      line-height: 16px;
+      font-size: 18px;
+      left: 34px;
+    }
+    marquee {
+      img {
+        height: 30px !important;
+      }
+    }
+  }
+  @media (max-width: 575px) {
+    marquee {
+      img {
+        height: 20px !important;
+      }
+    }
+  }
+}

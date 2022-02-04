@@ -1,0 +1,118 @@
+@import "../../assets/scss/helpers/grid.scss";
+
+@keyframes rightMove {
+  0% {
+    transform: translate(0);
+  }
+
+  100% {
+    transform: translate(1rem);
+  }
+}
+
+.wrapper {
+  margin: auto;
+  margin-bottom: 0;
+  // width: 300px;
+
+  .title {
+    font-family: Gilroy;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 44px;
+    position: relative;
+    margin-bottom: 1rem;
+    padding: 0 2rem;
+
+    color: #ffffff;
+
+    @media (min-width: 1440px) {
+      font-size: 35px;
+    }
+
+    @media (max-width: 1440px) {
+      font-size: 30px;
+    }
+
+    @media (max-width: 1200px) {
+      font-size: 26px;
+    }
+
+    @media (max-width: 920px) {
+      font-size: 20px;
+    }
+
+    @media (max-width: 768px) {
+      font-size: 20px;
+      padding: 1rem 1rem;
+    }
+  }
+
+  .imageWrapper {
+    position: relative;
+    background: transparent;
+    width: 100%;
+    background-repeat: no-repeat;
+    border-radius: 3rem;
+    margin-bottom: 4rem;
+    padding: 2rem;
+    z-index: 0;
+
+    border: 3px solid #c2eaba;
+    &:before {
+      content: "";
+      position: absolute;
+      border-radius: 2rem;
+      background: linear-gradient(
+        319deg,
+        #c2eaba 0%,
+        #c5f4e0 37%,
+        #efc2cf 100%
+      );
+      z-index: -1;
+      left: -2%;
+      top: -2%;
+      height: 104%;
+      width: 104%;
+      filter: blur(15px);
+    }
+    &:after {
+      content: "";
+      position: absolute;
+      border-radius: 2rem;
+      background: black;
+      z-index: -1;
+      left: 2%;
+      top: 2%;
+      height: 96%;
+      width: 96%;
+      filter: blur(10px);
+    }
+
+    .soldOut {
+      z-index: 10;
+      float: right;
+    }
+
+    .image {
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+
+      .innerImage {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+      }
+
+      video {
+        width: calc(100% - 4rem);
+        height: calc(100% - 4rem);
+        position: absolute;
+        top: 2rem;
+        left: 2rem;
+        object-fit: cover;
+      }
+    }
+  }
+}

@@ -1,0 +1,49 @@
+@import "../../../assets/scss/helpers/grid.scss";
+
+.wrapper {
+  margin-top: -2rem;
+  .cardBodyWrapper {
+    .link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+
+      img {
+        width: 200px;
+      }
+
+      span {
+        position: absolute;
+        font-family: Oswald;
+        font-style: italic;
+        font-weight: 600;
+        font-size: 20px;
+
+        line-height: 49px;
+        text-align: center;
+        text-transform: uppercase;
+
+        color: #ffffff;
+      }
+
+      &:hover {
+        img {
+          animation: rightMove 1s infinite;
+        }
+      }
+    }
+
+    @include lg-width {
+      .link {
+        img {
+          width: 350px;
+        }
+
+        span {
+          font-size: 36px;
+        }
+      }
+    }
+  }
+}

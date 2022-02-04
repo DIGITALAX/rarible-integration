@@ -1,0 +1,127 @@
+@import '../../assets/scss/helpers/grid.scss';
+
+@keyframes scrolling {
+  0% {
+    transform: translateX(-1342px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
+}
+
+.wrapper {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background-color: transparent;
+
+  .animationForm {
+    display: flex;
+    animation: scrolling 12s linear infinite;
+
+    .node {
+      display: flex;
+      align-items: center;
+
+      .toptext{
+        width: 800px;
+      }
+
+      .text {
+        text-transform: uppercase;
+        text-align: center;
+        color: transparent;
+        font-weight: 600;
+        font-family: m12;
+        padding: 1.5rem 3rem;
+        -webkit-text-stroke: 1px rgb(125, 254, 220);
+        word-break: unset;
+        white-space: nowrap;
+
+        @media (min-width: 1440px) {
+          font-size: 70px;
+        }
+
+        @media (max-width: 1440px) {
+          font-size: 70px;
+        }
+
+        @media (max-width: 1200px) {
+          font-size: 70px;
+        }
+
+        @media (max-width: 920px) {
+          font-size: 70px;
+        }
+      }
+    }
+  }
+}
+
+.wrapper2 {
+  width: 100%;
+  background-color: black;
+  padding: 1.5vw 0;
+  z-index: 2;
+  border-top: 1px solid #FFFFFF;
+  border-bottom: 1px solid #FFFFFF;
+
+  
+
+  .node {
+    margin: auto;
+    z-index: 2;
+    margin-left: auto;
+    margin-right: auto;      
+    left: 0;
+    right: 0;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+
+    a {
+      padding: 5px 20px;
+      width: 100%;
+      font-family: Oswald;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 20px;
+      line-height: 148%;
+      text-align: center;
+
+      color: #FFFFFF;
+
+      transition: all 0.2s ease-out;
+      &:hover {
+        transition: all 0.2s ease-out;
+        text-shadow: 0px 5px 10px #FFFFFF;
+        transform: translate3d(0px, -1px, 10px);
+        -webkit-text-stroke: 1px solid black;
+        // transform: translateY(10px);
+      }
+    }
+
+
+    @include md-width {
+      display: flex;
+      flex-direction: row;
+      
+
+      a {
+        font-size: 1.5vw;
+        width: 33%;  
+      }
+    }
+
+  }
+
+  img{
+    width: 600px;
+
+    @include xs-width {
+      width: 300px;
+    }
+  }
+}

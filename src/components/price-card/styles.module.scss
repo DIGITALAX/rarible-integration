@@ -1,0 +1,32 @@
+@import "../../assets/scss/helpers/grid.scss";
+
+.wrapper {
+  position: relative;
+  width: 100%;
+
+  .mainWrapper {
+    position: relative;
+    min-height: 1.5rem;
+
+    .backImage {
+      width: 100%;
+    }
+  }
+
+  .subText {
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 800;
+    font-size: 9px;
+    text-transform: uppercase;
+    line-height: 11px;
+    /* identical to box height */
+
+    letter-spacing: 0.56em;
+    padding-left: 0.56em;
+    margin: auto;
+    text-align: center;
+    white-space: nowrap;
+    color: #ffffff;
+  }
+}

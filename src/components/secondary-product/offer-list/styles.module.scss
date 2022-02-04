@@ -1,0 +1,83 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 5rem;
+
+  .title {
+    font-family: Gilroy;
+    font-style: normal;
+    font-weight: 800;
+    font-size: 45px;
+    line-height: 55px;
+
+    color: #ffffff;
+    margin-bottom: 2rem;
+  }
+
+  .offerList {
+    width: 80%;
+
+    th {
+      text-align: left;
+      font-family: Inter;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 24px;
+      line-height: 29px;
+
+      color: #ffffff;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    td {
+      font-family: Inter;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 24px;
+      line-height: 29px;
+
+      color: #ffffff;
+
+      & > img {
+        width: 40px;
+        height: 40px;
+        border-radius: 20px;
+      }
+
+      &:last-child {
+        text-align: right;
+      }
+
+      a {
+        color: white;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      .btnWrapper {
+        display: flex;
+        align-items: center;
+        justify-content: right;
+
+        button {
+          width: 150px;
+          min-width: unset !important;
+
+          span {
+            font-size: 1rem;
+          }
+        }
+      }
+    }
+
+    td:last-child {
+      width: 1px;
+      white-space: nowrap;
+    }
+  }
+}

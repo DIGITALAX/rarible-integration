@@ -1,0 +1,133 @@
+{
+  "CLIENT_URL": "",
+  "BACKEND_API": "",
+  "STATIC_DOMAIN": "",
+  "TTL_STATIC": 3600000,
+  "TTL_NO_STATIC": 600000,
+  "IS_PROD": false,
+  "SENTRY_DSN": "https://efd721a5be464838a0166fa08f84d7ab@o484615.ingest.sentry.io/5538941",
+  "ENVIRONMENT": "",
+  "NETWORKS": ["rinkeby", "goerli", "mumbai", "mainnet", "matic"],
+  "API_URLS": {
+    "mainnet": "https://api.thegraph.com/subgraphs/name/digitalax/digitalaxmatic",
+    "rinkeby": "https://api.thegraph.com/subgraphs/name/digitalax/digitalaxropsten",
+    "mumbai": "https://api.thegraph.com/subgraphs/name/digitalax/digitalaxmatic",
+    "matic": "https://api.thegraph.com/subgraphs/name/digitalax/digitalaxmatic",
+    "goerli": "https://api.thegraph.com/subgraphs/name/digitalax/digitalaxgoerli"
+  },
+  "EIP721_URL": {
+    "mainnet": "https://api.thegraph.com/subgraphs/name/digitalax/eip721dlta",
+    "matic": "https://api.thegraph.com/subgraphs/name/digitalax/eip721dlta",
+    "mumbai": "https://api.thegraph.com/subgraphs/name/camerons29/eip721-mumbai"
+  },
+  "NIX_URL": {
+    "mainnet": "https://api.thegraph.com/subgraphs/name/digitalax/nix-matic",
+    "matic": "https://api.thegraph.com/subgraphs/name/digitalax/nix-matic",
+    "mumbai": "https://api.thegraph.com/subgraphs/name/digitalax/nix-mumbai"
+  },
+  "DLTA_API_URL": "https://api.thegraph.com/subgraphs/name/digitalax/the-dlta",
+  "DEFAULT_NETWORK": "matic",
+  "DEFAULT_WEB3_URL": "https://mainnet.infura.io/v3/6e9690131f584ee0a8b445ebb4740f8b",
+  "WEB3_URLS": {
+    "GOERLI": "https://goerli.infura.io/v3/6e9690131f584ee0a8b445ebb4740f8b",
+    "MUMBAI": "https://rpc-mumbai.maticvigil.com/v1/19decf293d3dd2614121969e15c2b8b978700329",
+    "MATIC": "https://matic-mainnet.chainstacklabs.com"
+  },
+  "EXPLORER_URLS": {
+    "mainnet": "https://etherscan.io/",
+    "rinkeby": "https://rinkeby.etherscan.io/",
+    "goerli": "https://goerli.etherscan.io/",
+    "mumbai": "https://mumbai-explorer.matic.today/",
+    "matic": "https://explorer-mainnet.maticvigil.com/"
+  },
+  "REWARD_CONTRACT_ADDRESSES": {
+    "mainnet": "0xC155DDd8aA737aA53bBCea9EA62CAC0A3EEc942f",
+    "rinkeby": "0xb0DED58EF09929b0A0F2b10f48D42883df97466E",
+    "goerli": "0xb0DED58EF09929b0A0F2b10f48D42883df97466E",
+    "mumbai": "0xb0DED58EF09929b0A0F2b10f48D42883df97466E",
+    "matic": "0xb0DED58EF09929b0A0F2b10f48D42883df97466E"
+  },
+  "DIGITAL_MARKETPLACE_ADDRESSES": {
+    "mainnet": "0xCC48554581c17c2837C13B1685E0e784fADC1c3b",
+    "rinkeby": "0xAcA4eaf530085B062dB530634DA637e266a823C9",
+    "goerli": "0x655f2166b0709cd575202630952d71e2bb0d61af",
+    "mumbai": "0x18a38C3EB196671d702017C323a562D00a6eD003",
+    "matic": "0x8F235A04cC541efF19Fd42EFBfF0FCACAdd09DBC"
+  },
+  "ROOT_TUNNEL_ADDRESS": {
+    "mainnet": "0xb6ec8b0a52c1bae5b6aa890cd0ec9704398d0d55",
+    "rinkeby": "",
+    "goerli": "0x194202479730987db2b1a9d61083333d7336b3fb",
+    "mumbai": "0x194202479730987db2b1a9d61083333d7336b3fb",
+    "matic": ""
+  },
+  "CHILD_TUNNEL_V2_ADDRESS": {
+    "mumbai": "0x845f67c37AebC442647092A5697992fDd49FeeD9",
+    "matic": "0x751FE122eBcC4868138Dfdab9ec44f4d4167cB5a",
+    "mainnet": "",
+    "rinkeby": "",
+    "goerli": ""
+  },
+  "ROOT_TUNNEL_V2_ADDRESS": {
+    "mainnet": "0x8C9b09015273AB12D6A09bC61249FED3061d4199",
+    "goerli": "0xB7c06e7EE83E42d0201591a7af60ED14d5d79875",
+    "mumbai": "",
+    "matic": "",
+    "rinkeby": ""
+  },
+  "MONA_TOKEN_ADDRESSES": {
+    "mainnet": "0x275f5ad03be0fa221b4c6649b8aee09a42d9412a",
+    "rinkeby": "0x13379fe0e6992180ed0ac5174a02479896f9c510",
+    "goerli": "0x8472ACaFc4C5c10a1762C7d6E74f13ED7B994f3d",
+    "mumbai": "0xeFd3D060dDcFed7903806503440db1089031AF3A",
+    "matic": "0x6968105460f67c3BF751bE7C15f92F5286Fd0CE5"
+  },
+  "DTX_ADDRESSES": {
+    "mainnet": "0x0B509F4b044F713A91bB50535914f7ad160532fe",
+    "rinkeby": "0x13379fe0e6992180ed0ac5174a02479896f9c510",
+    "goerli": "0xc9c3704a65fE2D4f1F94A02480b25DbFA5764332", // v0 (same as mainnet)
+    "mumbai": "0x1Bc6D640710759Be37E5DCD1b23B322250353751", // v2 new one
+    "matic": "0x7B2a989c4D1AD1B79a84CE2EB79dA5D8d9C2b7a7"
+  },
+  "DIGI_MATERIALS_V2": {
+    "mumbai": "0x632914B69B11DCa3b391B62FB2812f5Eee36A626",
+    "matic": "0x567c7B3364BA2903A80eCbAD6c54bA8C0E1a069e"
+  },
+  "DTXV1_ADDRESSES": {
+    "mainnet": "",
+    "rinkeby": "",
+    "goerli": "",
+    "mumbai": "0x4CB61C672ff26c187394a9aA59360FbB6F23e83f", // this is test token for v1
+    "matic": "0x728Af879c3212cEf7a51D7fC296b5e9b7c14dbf6" // This is the bad token that is live
+  },
+  "UPGRADER_ADDRESSES": {
+    "mainnet": "",
+    "rinkeby": "",
+    "goerli": "",
+    "mumbai": "0xEf4e6e823F73773Fc7a14A7b270b2A184419cc84",
+    "matic": "0xA9692Ea47A4cDFbEC7A061BdEe512e93a1356Ad6"
+  },
+  "AUCTION_CONTRACT_ADDRESS": {
+    "mumbai": "0x1e345D7bdd9eF4E0b2dAc1A3dEf26A841B1b12f6",
+    "matic": "0x991C2Dc47AB12eF5020876219625A64C422B30d3"
+  },
+  "USDT_ADDRESS": {
+    "mainnet": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+    "rinkeby": "0xfb1d709cb959ac0ea14cad0927eabc7832e65058",
+    "goerli": "0xba62bcfcaafc6622853cca2be6ac7d845bc0f2dc",
+    "mumbai": "0x3813e82e6f7098b9583FC0F33a962D02018B6803",
+    "matic": "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"
+  },
+  "SECONDARY_MARKETPLACE_ADDRESS": {
+    "matic": "0x8Cc988C30C3959fC0E77ef7baA9c3ED6438b4325",
+    "mumbai": "0x4C9a048051886641d5322aa8eD635643eD57c986"
+  },
+  "DIGITALAX_NFT_V2_ADDRESS": {
+    "matic": "0x7B2a989c4D1AD1B79a84CE2EB79dA5D8d9C2b7a7",
+    "mumbai": "0x1Bc6D640710759Be37E5DCD1b23B322250353751"
+  },
+  "EXCHANGE_API": "https://api.coingecko.com/api/v3",
+  "IMGIX_URL": "digitalax.imgix.net",
+  "TIME_INTERVAL": 5000,
+  "QUICKSWAP_ROUTER": "0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff"
+}

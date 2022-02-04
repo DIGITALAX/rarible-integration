@@ -1,0 +1,788 @@
+@import '../../../../../assets/scss/helpers/grid.scss';
+@import '../../../../../assets/scss/helpers/helpers.scss';
+
+.wrapper {
+  background: black;
+  section {
+    position: relative;
+    overflow: hidden;
+    .video {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      width: 100%;
+      z-index: 0;
+      margin-bottom: -5px;
+    }
+
+    .body {
+      padding: 7.5rem 0rem;
+
+      @include xs-width {
+        padding: 7.5rem 1rem;
+      }
+
+      @include md-width {
+        padding: 7.5rem 0rem;
+      }
+
+      @include xl-width {
+        padding: 7.5rem 0rem;
+      }
+
+      @include xxl-width {
+        padding: 7.5rem 0rem;
+      }
+
+      .productName {
+        width: 100%;
+        left: 50%;
+        padding: 2rem 0;
+        text-align: center;
+        text-transform: uppercase;
+        color: white;
+        font-size: 30px;
+        line-height: 125%;
+
+        font-family: Orbitron;
+        font-style: normal;
+        font-weight: 900;
+        margin: auto;
+
+        @include sm-width {
+          width: 400px;
+        }
+
+        @include md-width {
+          font-size: 30px;
+          width: 500px;
+        }
+
+        @include lg-width {
+          font-size: 40px;
+          width: 350px;
+          margin: 0;
+        }
+
+        @include xl-width {
+          font-size: 50px;
+          width: 400px;
+        }
+
+        @include xxl-width {
+          font-size: 60px;
+          width: 500px;
+        }
+      }
+
+      .mainBody {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 4rem;
+        position: relative;
+        z-index: 10;
+
+        @include lg-width {
+          grid-template-columns: 300px auto;
+        }
+
+        @include lg-width {
+          grid-template-columns: 350px auto;
+          gap: 4rem;
+        }
+
+        @include xl-width {
+          grid-template-columns: 400px auto;
+          gap: 6rem;
+        }
+
+        @include xxl-width {
+          grid-template-columns: 500px auto;
+          gap: 8rem;
+        }
+
+        .imageCardWrapper {
+          
+          .childrenDescription {
+            margin-top: 9rem;
+            font-family: Gilroy;
+            font-style: normal;
+            font-weight: 800;
+            font-size: 23px;
+            line-height: 31px;
+
+            color: #ffffff;
+
+            a {
+              color: white;
+              text-decoration: underline;
+            }
+          }
+
+          .childrenWrapper {
+            display: flex;
+            margin-top: 1rem;
+            width: 100%;
+            // overflow: auto;
+            flex-wrap: wrap;
+
+            img,
+            video {
+              width: 81px;
+              height: 81px;
+              margin-right: 0.5rem;
+              border: 2px solid #FFFFFF;
+              box-sizing: border-box;
+              box-shadow: 0px 4px 20px 1px #FFFFFF;
+            }
+          }
+
+          .lookTitle {
+            font-family: Gilroy;
+            font-style: normal;
+            font-weight: 800;
+            font-size: 60px;
+            line-height: 74px;
+            /* identical to box height */
+            text-align: center;
+            margin-bottom: 1rem;
+
+            color: #ffffff;
+
+            text-shadow: 0px 4px 20px #ff12f6;
+          }
+
+          .timeWrapper {
+            width: 250px;
+            margin: auto;
+            margin-top: 3rem;
+          }
+        }
+
+        .infoWrapper {
+          display: flex;
+          margin-top: 10px;
+
+          @include md-width {
+            margin-top: -30px;
+          }
+
+          .leftSection {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            flex-grow: 1;
+
+            .bespokeBtn {
+              background: rgba(92, 89, 91, 0.5);
+              position: relative;
+              color: white;
+              font-size: 24px;
+              padding: 0.75rem 1rem;
+              text-transform: uppercase;
+              font-weight: bold;
+              font-family: 'Bebas Neue';
+              margin-top: 1rem;
+              border: none;
+              width: 80%;
+              align-self: center;
+
+              @include transition();
+
+              &:hover {
+                @include scale();
+                @include transition();
+              }
+            }
+
+            a {
+              text-align: center;
+            }
+
+            .stakeBtn {
+              background: rgba(92, 89, 91, 0.5);
+              position: relative;
+              color: white;
+              font-size: 24px;
+              padding: 0.75rem 1rem;
+              text-transform: uppercase;
+              font-weight: bold;
+              font-family: 'Bebas Neue';
+              margin-top: 1rem;
+              border: none;
+              width: 80%;
+              align-self: center;
+
+              @include transition();
+
+              &:hover {
+                @include scale();
+                @include transition();
+              }
+            }
+
+            .amount {
+              color: white;
+              font-family: Gilroy;
+              font-size: 40px;
+              font-weight: bold;
+              margin-bottom: 1rem;
+              display: flex;
+              width: 200%;
+              text-shadow: 0px 4px 10px #FFFFFF;
+
+              .helper {
+                cursor: pointer;
+                display: flex;
+                height: 52px;
+                margin-top: -30px;
+                align-items: center;
+                text-shadow: none;
+
+                .questionMark {
+                  border: 1px solid white;
+                  border-radius: 50%;
+                  width: 27px;
+                  height: 27px;
+                  font-size: 23px;
+
+                  display: flex;
+                  font-family: Inter;
+                  font-style: normal;
+                  font-weight: 600;
+                  justify-content: center;
+                  align-items: center;
+                  margin-left: 10px;
+                }
+
+                .description {
+                  display: none;
+                  background: #000000;
+                  border: 2px solid #FFFFFF;
+                  padding: 7px 12px;
+                  justify-content: center;
+                  align-items: center;
+                  font-family: Gilroy;
+                  font-weight: 800;
+                  font-size: 14px;
+                  margin-left: 10px;
+
+                  a {
+                    text-decoration: underline;
+                    color: white;
+                  }
+                }
+
+                &:hover {
+                  .description {
+                    display: block;
+                    width: 200px;
+                    @include md-width {
+                      width: 300px;
+                    }
+                  }
+                }
+              }
+            }
+
+            .lovesWrapper {
+              display: flex;
+              align-items: center;
+              margin-bottom: 1rem;
+
+              button {
+                background: transparent;
+                border: none;
+
+                transition: 0.3s all;
+                &:hover {
+                  transform: scale(1.1);
+                  transition: 0.3s all;
+                }
+              }
+
+              .likeCount {
+                color: #ffffff;
+                font-family: Inter;
+                font-weight: bold;
+                font-size: 33px;
+                margin-left: 10px;
+
+                span {
+                  margin-left: 5px;
+                  margin-right: 15px;
+                  font-size: 20px;
+                }
+              }
+
+              .viewCount {
+                color: #ffffff;
+                font-family: Inter;
+                font-weight: bold;
+                font-size: 33px;
+                margin-left: 10px;
+
+                span {
+                  margin-left: 5px;
+                  margin-right: 15px;
+                  font-size: 20px;
+                }
+              }
+            }
+          }
+
+          .rightSection {
+            display: none;
+
+            @include md-width {
+              padding-top: 126px;
+              margin-left: 1rem;
+              display: flex;
+            }
+          }
+
+          .mobileRightSection {
+            display: flex;
+            margin-top: 2rem;
+
+            @include md-width {
+              display: none;
+            }
+          }
+
+          .rightSection,
+          .mobileRightSection {
+            flex-direction: column;
+
+            .item {
+              position: relative;
+              display: flex;
+              align-items: cneter;
+              margin-bottom: 1rem;
+
+              &:hover {
+                .tooltip {
+                  display: block;
+                }
+              }
+
+              .label {
+                white-space: nowrap;
+                color: white;
+                align-self: center;
+                margin-left: 55px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+              }
+
+              .tooltip {
+                display: none;
+                position: absolute;
+                padding: 0.5rem;
+                top: calc(100% + 0.5rem);
+                left: 0;
+                z-index: 50;
+                background: #000000;
+                border: 2px solid white;
+                width: 175px;
+                color: white;
+                font-family: Gilroy;
+                font-style: normal;
+                font-weight: 800;
+                font-size: 14px;
+                line-height: 20px;
+                /* or 143% */
+
+                align-items: center;
+
+                color: #ffffff;
+              }
+            }
+
+            .checkContainer {
+              display: block;
+              position: relative;
+              cursor: pointer;
+              font-size: 22px;
+              -webkit-user-select: none;
+              -moz-user-select: none;
+              -ms-user-select: none;
+              user-select: none;
+
+              .check {
+                position: absolute;
+                opacity: 0;
+                cursor: pointer;
+                height: 0;
+                width: 0;
+              }
+
+              .checkmark {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 40px;
+                width: 40px;
+                background: #111111;
+                border: 3px solid #FFFFFF;
+                border-radius: 13px;
+                box-shadow: 0px 4px 10px 1px #FFFFFF;
+
+                &:after {
+                  content: '';
+                  position: absolute;
+                  display: none;
+                }
+              }
+            }
+
+            .checkContainer .checkmark:after {
+              left: 9px;
+              top: 0px;
+              width: 15px;
+              height: 25px;
+              border-width: 0 3px 3px 0;
+              -webkit-transform: rotate(45deg);
+              -ms-transform: rotate(45deg);
+              transform: rotate(45deg);
+              border: solid white;
+              border-top: 0;
+              border-left: 0;
+            }
+
+            /* Show the checkmark when checked */
+            .checkContainer input:checked ~ .checkmark:after {
+              display: block;
+            }
+
+            .check {
+              background: #111111;
+            }
+          }
+
+          .lookInspo {
+            margin-top: 3rem;
+            display: flex;
+            flex-direction: column;
+
+            .title {
+              font-family: Gilroy;
+              font-style: normal;
+              font-weight: 800;
+              font-size: 40px;
+              line-height: 49px;
+
+              color: #ffffff;
+
+              text-shadow: 0px 4px 20px #ff12f6;
+            }
+
+            .inspoItem {
+              font-family: Gilroy;
+              font-style: normal;
+              font-weight: 800;
+              font-size: 22px;
+              line-height: 27px;
+
+              color: #ffffff;
+            }
+          }
+        }
+
+        .infoCard {
+          color: white;
+          font-family: Gilroy;
+          font-size: 22px;
+          font-weight: 800;
+          text-transform: uppercase;
+          line-height: 27px;
+
+          img {
+            position: relative;
+            width: 50px;
+            border-radius: 0.5rem;
+            margin-right: 1rem;
+          }
+
+          .info {
+            display: flex;
+            align-items: center;
+          }
+
+          .skinName {
+            margin-bottom: 0.5rem;
+
+            .text {
+              font-family: Orbitron;
+              font-style: normal;
+              font-weight: bold;
+            }
+          }
+
+          .description {
+            font-family: Gilroy;
+            font-style: normal;
+            font-weight: 800;
+            font-size: 18px;
+            line-height: 23px;
+            text-transform: none;
+          }
+        }
+
+        .actions {
+          margin-top: 1rem;
+          margin-bottom: 2rem;
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 1rem;
+          z-index: 10;
+
+          .buttonWrapper {
+            display: flex;
+            flex-direction: column;
+            width: 200px;
+            margin: auto;
+
+            .buttonLabel {
+              font-family: Inter;
+              font-style: normal;
+              font-weight: 800;
+              font-size: 9px;
+              text-transform: uppercase;
+              line-height: 11px;
+              letter-spacing: 0.56em;
+              text-align: center;
+              color: #ffffff;
+            }
+          }
+        }
+
+        .viewBidHistory {
+          position: relative;
+          background: rgba(92, 89, 91, 0.5);
+          color: white;
+          font-size: 24px;
+          padding: 0.75rem 1rem;
+          text-transform: uppercase;
+          font-weight: bold;
+          font-family: 'Bebas Neue';
+          border: none;
+          margin-top: 1rem;
+          width: 80%;
+          align-self: center;
+
+          @include transition();
+
+          &:hover {
+            @include scale();
+            @include transition();
+          }
+        }
+      }
+    }
+
+    .designerBody,
+    .developerBody {
+      position: relative;
+
+      @include xs-width {
+        padding: 2rem;
+      }
+
+      @include md-width {
+        padding: 7.5rem 7.5rem;
+      }
+
+      @include xl-width {
+        padding: 7.5rem 5rem;
+      }
+
+      @include xxl-width {
+        padding: 7.5rem 5rem;
+      }
+
+      .title {
+        font-size: 60px;
+        font-family: Gilroy;
+        color: white;
+        font-weight: 600;
+        text-transform: uppercase;
+        text-shadow: #f82ba2 -2px 0px 14px;
+      }
+
+      .data {
+        padding: 3rem 0rem;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 5rem;
+
+        @include lg-width {
+          grid-template-columns: auto 40%;
+        }
+
+        @include lg-width {
+          padding: 3rem 0rem;
+          gap: 5rem;
+        }
+
+        @include xl-width {
+          padding: 3rem 0rem;
+          gap: 7.5rem;
+        }
+
+        @include xxl-width {
+          padding: 3rem 0rem;
+          gap: 10rem;
+        }
+
+        .infoWrapper {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+
+          .wearersLabel {
+            text-transform: uppercase;
+            font-family: Gilroy;
+            font-weight: 800;
+            font-size: 10px;
+            line-height: 18px;
+            letter-spacing: 0.12em;
+            color: white;
+            margin-left: 10px;
+            margin-bottom: 2px;
+          }
+
+          .userList {
+            margin-bottom: 40px;
+            margin-left: 10px;
+          }
+
+          a {
+            margin-top: 20px;
+
+            .getDressedButton {
+              background: #bd3da9;
+              border: none;
+              font-family: Gilroy;
+              font-style: normal;
+              font-weight: 800;
+              font-size: 16px;
+              color: white;
+
+              padding: 12px 10px;
+
+              @include transition();
+
+              &:hover {
+                @include scale();
+                @include transition();
+              }
+            }
+          }
+        }
+
+        a:hover {
+          opacity: 0.9;
+        }
+
+        .name {
+          text-transform: uppercase;
+          color: white;
+          font-size: 22px;
+          line-height: 27px;
+          font-weight: 800;
+          font-family: Gilroy;
+        }
+
+        .description {
+          font-family: Gilroy;
+          font-weight: 300;
+          font-size: 1rem;
+          line-height: 18px;
+          color: white;
+        }
+
+        .profileButton {
+          background: #000000;
+          border-radius: 29px;
+          color: white;
+
+          font-family: Gilroy;
+          font-weight: 800;
+          font-size: 15px;
+          line-height: 18px;
+          display: flex;
+          align-items: center;
+          text-align: center;
+
+          border: none;
+          padding: 7px 12px;
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+  .globalDesignerNetwork {
+    padding: 2rem;
+    background-image: url('../../../../../../public/images/metaverse/modal_texture.png');
+    background-color: black;
+    background-size: contain;
+
+    .title {
+      width: 50%;
+    }
+
+    .text {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      font-family: Poppins;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 15px;
+
+      @include md-width {
+        font-size: 20px;
+      }
+
+      @include lg-width {
+        font-size: 25px;
+      }
+
+      @include xl-width {
+        font-size: 30px;
+      }
+
+      color: #ffffff;
+    }
+
+    .link {
+      color: white;
+      margin-right: 0;
+
+      .linkWrapper {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        .body {
+          background-color: black;
+          padding: 0;
+          padding-left: 1rem;
+          padding-right: 1rem;
+          height: 30px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 15px;
+          text-transform: uppercase;
+        }
+      }
+    }
+  }
+
+  .margin50 {
+    margin-top: 50px;
+  }
+}

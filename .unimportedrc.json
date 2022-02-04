@@ -1,0 +1,39 @@
+{
+  "ignoreUnresolved": [
+    "src/data/designers.json",
+    "src/data/second-designers.json"
+  ],
+  "ignoreUnused": [
+    "@arkane-network/web3-arkane-provider",
+    "@biconomy/mexa",
+    "@maticnetwork/maticjs",
+    "@maticnetwork/walletconnect-provider",
+    "@pinata/sdk",
+    "async-mutex",
+    "cacheable-response",
+    "config",
+    "cookie-parser",
+    "copy-to-clipboard",
+    "cross-env",
+    "express",
+    "highcharts-react-official",
+    "lodash.chunk",
+    "lodash.kebabcase",
+    "lodash.uniqby",
+    "next",
+    "next-images",
+    "next-sitemap",
+    "rc-slider",
+    "react",
+    "react-dom",
+    "react-immutable-proptypes",
+    "react-step-progress-bar",
+    "react-timeago",
+    "redux-logger",
+    "sass",
+    "semantic-ui-css",
+    "semantic-ui-react",
+    "tailwindcss"
+  ],
+  "ignoreUnimported": []
+}
