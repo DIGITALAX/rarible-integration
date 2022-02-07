@@ -1,5 +1,5 @@
-@import '../../../../../assets/scss/helpers/grid.scss';
-@import '../../../../../assets/scss/helpers/helpers.scss';
+@import "../../../../../assets/scss/helpers/grid.scss";
+@import "../../../../../assets/scss/helpers/helpers.scss";
 
 .wrapper {
   background: black;
@@ -103,7 +103,6 @@
         }
 
         .imageCardWrapper {
-          
           .childrenDescription {
             margin-top: 9rem;
             font-family: Gilroy;
@@ -132,9 +131,9 @@
               width: 81px;
               height: 81px;
               margin-right: 0.5rem;
-              border: 2px solid #FFFFFF;
+              border: 2px solid #ffffff;
               box-sizing: border-box;
-              box-shadow: 0px 4px 20px 1px #FFFFFF;
+              box-shadow: 0px 4px 20px 1px #ffffff;
             }
           }
 
@@ -182,7 +181,7 @@
               padding: 0.75rem 1rem;
               text-transform: uppercase;
               font-weight: bold;
-              font-family: 'Bebas Neue';
+              font-family: "Bebas Neue";
               margin-top: 1rem;
               border: none;
               width: 80%;
@@ -208,7 +207,7 @@
               padding: 0.75rem 1rem;
               text-transform: uppercase;
               font-weight: bold;
-              font-family: 'Bebas Neue';
+              font-family: "Bebas Neue";
               margin-top: 1rem;
               border: none;
               width: 80%;
@@ -230,7 +229,7 @@
               margin-bottom: 1rem;
               display: flex;
               width: 200%;
-              text-shadow: 0px 4px 10px #FFFFFF;
+              text-shadow: 0px 4px 10px #ffffff;
 
               .helper {
                 cursor: pointer;
@@ -259,7 +258,7 @@
                 .description {
                   display: none;
                   background: #000000;
-                  border: 2px solid #FFFFFF;
+                  border: 2px solid #ffffff;
                   padding: 7px 12px;
                   justify-content: center;
                   align-items: center;
@@ -426,12 +425,12 @@
                 height: 40px;
                 width: 40px;
                 background: #111111;
-                border: 3px solid #FFFFFF;
+                border: 3px solid #ffffff;
                 border-radius: 13px;
-                box-shadow: 0px 4px 10px 1px #FFFFFF;
+                box-shadow: 0px 4px 10px 1px #ffffff;
 
                 &:after {
-                  content: '';
+                  content: "";
                   position: absolute;
                   display: none;
                 }
@@ -567,7 +566,7 @@
           padding: 0.75rem 1rem;
           text-transform: uppercase;
           font-weight: bold;
-          font-family: 'Bebas Neue';
+          font-family: "Bebas Neue";
           border: none;
           margin-top: 1rem;
           width: 80%;
@@ -726,7 +725,7 @@
   }
   .globalDesignerNetwork {
     padding: 2rem;
-    background-image: url('../../../../../../public/images/metaverse/modal_texture.png');
+    background-image: url("../../../../../../public/images/metaverse/modal_texture.png");
     background-color: black;
     background-size: contain;
 

@@ -123,9 +123,13 @@ const LandingPage = () => {
     <div className={styles.wrapper}>
       <HeroSection title="PRIMARY" subTitle="MARKETPLACE" />
 
-      {!!collectionGroups?.length && (
-        <CollectionList items={collectionGroups} />
-      )}
+      <section className={styles.collectionSection}>
+        <div className={styles.collectionWrapper}>
+          {!!collectionGroups?.length && (
+            <CollectionList items={collectionGroups} />
+          )}
+        </div>
+      </section>
     </div>
   );
 };

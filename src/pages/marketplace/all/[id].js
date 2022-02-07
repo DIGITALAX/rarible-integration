@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import styles from "./index.module.scss";
-import cn from "classnames";
 import PixelLoader from "@components/pixel-loader";
+import Container from "@components/container";
 import {
   getCollectionGroupById,
   getDigitalaxMarketplaceV2Offers,
@@ -122,39 +122,41 @@ const Auctions = () => {
         setSortBy={(v) => setSortBy(v)}
       />
 
-      <div className="container mx-auto">
-        <div className="grid p-8 grid-cols-1 lg:grid-cols-2 gap-8">
-          {filteredProducts
-            .sort((a, b) => {
-              if (a.sold && !b.sold) return 1;
-              if (!a.sold && b.sold) return -1;
-              return 0;
-            })
-            .sort((a, b) => {
-              if (parseInt(a.startTime) > parseInt(b.startTime)) return -1;
-              if (parseInt(a.startTime) < parseInt(b.startTime)) return 1;
-              return 0;
-            })
-            .map((prod, index) => {
-              return (
-                <ProductInfoCard
-                  key={prod.id}
-                  isLook={id === "15"}
-                  product={filteredProducts[index]}
-                  price={
-                    filteredProducts[index].auction
-                      ? filteredProducts[index].topBid
-                      : filteredProducts[index].primarySalePrice
-                  }
-                  showRarity
-                  showCollectionName
-                  sold={prod.sold}
-                  isAuction={prod.auction}
-                />
-              );
-            })}
-        </div>
-      </div>
+      <section className={styles.productsSection}>
+        <Container>
+          <div className={styles.body}>
+            {filteredProducts
+              .sort((a, b) => {
+                if (a.sold && !b.sold) return 1;
+                if (!a.sold && b.sold) return -1;
+                return 0;
+              })
+              .sort((a, b) => {
+                if (parseInt(a.startTime) > parseInt(b.startTime)) return -1;
+                if (parseInt(a.startTime) < parseInt(b.startTime)) return 1;
+                return 0;
+              })
+              .map((prod, index) => {
+                return (
+                  <ProductInfoCard
+                    key={prod.id}
+                    isLook={id === "15"}
+                    product={filteredProducts[index]}
+                    price={
+                      filteredProducts[index].auction
+                        ? filteredProducts[index].topBid
+                        : filteredProducts[index].primarySalePrice
+                    }
+                    showRarity
+                    showCollectionName
+                    sold={prod.sold}
+                    isAuction={prod.auction}
+                  />
+                );
+              })}
+          </div>
+        </Container>
+      </section>
     </div>
   );
 };

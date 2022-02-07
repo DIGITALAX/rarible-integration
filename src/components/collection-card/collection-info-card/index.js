@@ -17,7 +17,7 @@ const CollectionInfoCard = ({ collection }) => {
     return (
       <>
         {parseFloat(collection.sold).toFixed(2)} $MONA
-        <span className="font-normal">
+        <span>
           {` `}($
           {(parseFloat(monaPerEth) * exchangeRate * collection.sold).toFixed(2)}
           )
@@ -31,19 +31,23 @@ const CollectionInfoCard = ({ collection }) => {
       <InfoCard>
         <div className={styles.cardBodyWrapper}>
           <Link href={`/marketplace/all/${collection.id}`}>
-            <a className="flex items-center justify-center mb-8">
-              <img
-                src="/images/metaverse/gray_button2.png"
-                className="w-48 lg:w-64"
-              />
-              <span className="absolute font-secondary italic font-bold text-lg lg:text-2xl text-center text-white uppercase">
-                view collection
-              </span>
+            <a className={styles.link}>
+              <img src="/images/metaverse/gray_button2.png" />
+              <span>view collection</span>
             </a>
           </Link>
+          {/* {collection?.id !== '15' ? ( */}
           <div className={styles.pricesWrapper}>
             <PriceCard mode={0} mainText={getPrice()} subText="total sold" />
+            {/* <PriceCard
+              mode={0}
+              mainText={`$${(parseFloat(monaPerEth) * exchangeRate * collection.sold).toFixed(2)}`}
+              subText="dollar equivalent"
+            /> */}
           </div>
+          {/* ) : (
+            <div className={styles.lookText}>LOOK Hackathon</div>
+          )} */}
         </div>
       </InfoCard>
     </div>

@@ -6,6 +6,7 @@ import styles from "./styles.module.scss";
 
 import ImageCard from "@components/image-card";
 import InfoCard from "@components/info-card";
+import Container from "@components/container";
 import UserList from "@components/user-list";
 import BannerBar from "@components/banner-bar";
 import PriceCard from "@components/price-card";
@@ -453,17 +454,48 @@ const Product = ({ pageTitle }) => {
     );
   };
 
+  // const isLookHakathon = () => {
+  //   return lookIds.includes(id);
+  // };
+
   if (!isFetchedProduct || !isFetchedSecondDesigners || !isFetchedViewCount) {
     return <ProductPageLoader />;
   }
 
   return (
     <>
-      <Head></Head>
+      <Head>
+        {/* <title key="title">{pageTitle}</title> */}
+        {/* <meta key="description" name="description" content={product?.garment?.description} />
+        <meta property="og:site_name" content={`Skin Product - {${product?.garment?.name}} - Digitalax`} />
+        <meta property="og:type" content="website" />
+        <meta
+          key="og:title"
+          property="og:title"
+          content={product?.garment?.name}
+        />
+        <meta
+          key="og:description"
+          property="og:description"
+          content={product?.garment?.description}
+        />
+        <meta
+          key="og:image"
+          property="og:image"
+          content={product?.garment?.image}
+        />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content={product?.garment?.image} />
+        <meta name="twitter:title" content={product?.garment?.name} />
+        <meta name="twitter:description" content={product?.garment?.description} /> */}
+
+        {/* <meta property="og:url" content={} />
+        <meta name="twitter:url" content={} /> */}
+      </Head>
 
       <div className={styles.wrapper}>
         <section className={styles.mainSection}>
-          <div className="container mx-auto lg:px-40">
+          <Container>
             <div className={styles.body}>
               <div className={styles.productName}>
                 {" "}
@@ -471,6 +503,11 @@ const Product = ({ pageTitle }) => {
               </div>
               <div className={styles.mainBody}>
                 <div className={styles.imageCardWrapper}>
+                  {/* {!isLookHakathon() ? ( */}
+
+                  {/* ) : ( */}
+                  {/* <div className={styles.lookTitle}>LOOK Hackathon</div> */}
+                  {/* )} */}
                   <ImageCard
                     data={product}
                     price={(getPrice() / 10 ** 18).toFixed(2)}
@@ -480,6 +517,7 @@ const Product = ({ pageTitle }) => {
                         Date.now() > product.endTime * 1000) ||
                       offer?.amountSold >= offer?.totalAmount
                     }
+                    // showButton={!isLookHakathon()}
                   />
 
                   {!!product?.children?.length && (
@@ -593,6 +631,8 @@ const Product = ({ pageTitle }) => {
                         ))}
                       </div>
                     )}
+                    {/* {!isLookHakathon() ? ( */}
+                    {/* <> */}
                     <div className={styles.actions}>
                       <div className={styles.buttonWrapper}>
                         <PriceCard
@@ -628,6 +668,18 @@ const Product = ({ pageTitle }) => {
                         STAKE YOUR FASHION FOR $MONA YIELD
                       </button>
                     </a>
+                    {/* </> */}
+                    {/* ) : null} */}
+                    {/* {isLookHakathon() && (
+                    <div className={styles.lookInspo}>
+                      <div className={styles.title}>LOOK NFT Inspo:</div>
+                      {lookInspo.map((item, index) => (
+                        <div className={styles.inspoItem} key={index}>
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                    )} */}
                   </div>
                   {!!sourceType.length && (
                     <div className={styles.rightSection}>
@@ -653,7 +705,7 @@ const Product = ({ pageTitle }) => {
                 </div>
               </div>
             </div>
-          </div>
+          </Container>
         </section>
         <BannerBar className={styles.homeHeroBar} type={2} />
         {product?.designer ? (
@@ -665,7 +717,7 @@ const Product = ({ pageTitle }) => {
                   type="video/mp4"
                 />
               </video>
-              <div className="container mx-auto">
+              <Container>
                 <div className={styles.designerBody}>
                   <div className={styles.title}> designer </div>
                   <div className={styles.data}>
@@ -741,7 +793,7 @@ const Product = ({ pageTitle }) => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </Container>
             </section>
 
             {secondDesigners &&
@@ -760,7 +812,7 @@ const Product = ({ pageTitle }) => {
                         type="video/mp4"
                       />
                     </video>
-                    <div className="container mx-auto">
+                    <Container>
                       <div className={styles.designerBody}>
                         <div className={styles.title}> designer </div>
                         <div className={styles.data}>
@@ -833,7 +885,7 @@ const Product = ({ pageTitle }) => {
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </Container>
                   </section>
                 );
               })}

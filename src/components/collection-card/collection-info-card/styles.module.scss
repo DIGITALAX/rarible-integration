@@ -34,6 +34,39 @@
       }
     }
 
+    .pricesWrapper {
+      // display: grid;
+      // grid-template-columns: repeat(2, 1fr);
+      // gap: 1rem;
+      // align-items: start;
+    }
+
+    .lookText {
+      font-family: Gilroy;
+      font-style: normal;
+      font-weight: 800;
+      font-size: 3rem;
+      white-space: nowrap;
+      line-height: 91px;
+      text-align: center;
+
+      color: #ffffff;
+
+      text-shadow: 0px 4px 20px #ff12f6;
+    }
+
+    // @include md-width {
+    //   .link {
+    //     img {
+    //       width: 80%;
+    //     }
+
+    //     span {
+    //       font-size: 36px;
+    //     }
+    //   }
+    // }
+
     @include lg-width {
       .link {
         img {

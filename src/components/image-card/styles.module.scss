@@ -1,6 +1,9 @@
 @import "../../assets/scss/helpers/grid.scss";
 
 .imageCardWrapper {
+  width: 300px;
+  margin: auto;
+
   .additionalImages {
     margin-top: 5rem;
     margin-bottom: 3rem;
@@ -73,6 +76,7 @@
     position: relative;
     padding: 2rem;
     border-radius: 2rem;
+    height: 300px;
     border: 2px solid #9c28ff;
     // background: black;
     // box-shadow: inset 0px 0px 30px 20px rgba(197, 32, 129, 0.5),
@@ -301,6 +305,56 @@
         left: 150px;
         top: calc(80vh + 10px);
       }
+    }
+  }
+
+  @include sm-width {
+    width: 400px;
+
+    .bodyWrapper {
+      height: 400px !important;
+    }
+  }
+
+  @include md-width {
+    width: 500px;
+
+    .bodyWrapper {
+      height: 500px !important;
+    }
+
+    .collectionName {
+      font-size: 36px;
+    }
+
+    .designerWrapper {
+      .name {
+        font-size: 22px;
+      }
+    }
+  }
+
+  @include lg-width {
+    width: 350px;
+
+    .bodyWrapper {
+      height: 350px !important;
+    }
+  }
+
+  @include xl-width {
+    width: 400px;
+
+    .bodyWrapper {
+      height: 400px !important;
+    }
+  }
+
+  @include xxl-width {
+    width: 500px;
+
+    .bodyWrapper {
+      height: 500px !important;
     }
   }
 }

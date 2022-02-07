@@ -1,5 +1,4 @@
 import NewButton from "@components/buttons/newbutton";
-import cn from "classnames";
 import Link from "next/link";
 import React from "react";
 import CollectionInfoCard from "./collection-info-card";
@@ -40,13 +39,11 @@ const CollectionCard = ({ collection }) => {
 
   return (
     <>
-      <div className={cn("xl:w-128 md:w-100 sm:w-96 w-96", styles.wrapper)}>
-        <div className="font-primary py-8 xl:text-5xl lg:text-4xl md:text-3xl text-3xl text-white font-extrabold">
+      <div className={styles.wrapper}>
+        <div className={styles.title}>
           {collectionNames[parseInt(collection?.id)]}
         </div>
-        <div
-          className={cn("xl:h-128 md:h-100 sm:h-96 h-96", styles.imageWrapper)}
-        >
+        <div className={styles.imageWrapper}>
           {collection?.id !== "15" &&
           collection.endTime &&
           parseInt(collection.endTime) < Date.now() / 1000 ? (

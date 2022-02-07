@@ -14,19 +14,11 @@ const PriceCard = ({ mode = 0, mainText, subText }) => {
         {images[mode] !== "" && (
           <img src={images[mode]} className={styles.backImage} />
         )}
-        <div className="w-full h-full absolute top-0 flex align-items-center justify-center flex-wrap-reverse">
-          <p className="font-primary lg:text-3xl md:text-2xl text-xl text-white font-bold">
-            {" "}
-            {mainText}{" "}
-          </p>
+        <div className={styles.mainText}>
+          <p className={mode == 1 ? styles.oswaldFont : ""}> {mainText} </p>
         </div>
       </div>
-      {subText ? (
-        <p className="font-primary font-xs text-center font-normal uppercase text-white text-white">
-          {" "}
-          {subText}{" "}
-        </p>
-      ) : null}
+      {subText ? <p className={styles.subText}> {subText} </p> : null}
     </div>
   );
 };

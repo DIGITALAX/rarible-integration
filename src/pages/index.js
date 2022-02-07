@@ -13,6 +13,7 @@ import PixelLoader from "@components/pixel-loader";
 import styles from "./styles.module.scss";
 import { useSelector } from "react-redux";
 import { getChainId } from "@selectors/global.selectors";
+import Container from "@components/container";
 import Link from "next/link";
 import ProductInfoCard from "@components/product-info-card";
 import Filters from "@components/filters";
@@ -320,7 +321,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      <div className="container mx-auto">
+      <Container>
         <section className={styles.collectionsWrapper}>
           {filterProducts(products, filter, sortBy)
             .sort((a, b) => {
@@ -360,7 +361,7 @@ const LandingPage = () => {
               }
             })}
         </section>
-      </div>
+      </Container>
     </div>
   );
 };

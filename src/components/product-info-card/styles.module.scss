@@ -2,6 +2,28 @@
 
 .productInfoCardwrapper {
   margin: auto;
+  width: calc(100vw - 4rem);
+
+  @include sm-width {
+    width: 400px;
+  }
+
+  @include md-width {
+    width: 500px;
+  }
+
+  @include lg-width {
+    width: 350px;
+  }
+
+  @include xl-width {
+    width: 400px;
+  }
+
+  @include xxl-width {
+    width: 500px;
+  }
+
   .noHorizontalPadding {
     padding: 1rem 0rem;
   }

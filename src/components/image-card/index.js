@@ -5,7 +5,6 @@ import {
   openSwitchNetworkModal,
 } from "@actions/modals.actions";
 import NewButton from "@components/buttons/newbutton";
-import cn from "classnames";
 import Link from "next/link";
 import { getAccount } from "@selectors/user.selectors";
 import LazyLoad from "react-lazyload";
@@ -64,6 +63,8 @@ const ImageCard = ({
     if (data?.garment?.animation || data?.animation) setMainImageType(1);
     else if (data?.garment?.image || data?.image) setMainImageType(2);
   }, [data]);
+
+  console.log({ data });
 
   const onBuyNow = () => {
     if (!router.asPath.includes("product")) {
@@ -125,11 +126,10 @@ const ImageCard = ({
   const renderImage = () => {
     return (
       <div
-        className={cn(
-          "xl:h-128 md:h-100 sm:h-96 h-96",
+        className={[
           styles.bodyWrapper,
-          borderType === "white" ? styles.white : ""
-        )}
+          borderType === "white" ? styles.white : "",
+        ].join(" ")}
       >
         {showRarity ? (
           <div className={styles.rarity}>
@@ -144,6 +144,7 @@ const ImageCard = ({
           >
             {mainImageType === 1 ? (
               <LazyLoad>
+                {/* <video key={data.id} autoPlay muted={!asPath.includes('product')} loop className={styles.video} */}
                 <video
                   key={data.id}
                   autoPlay
@@ -285,14 +286,9 @@ const ImageCard = ({
 
   return (
     <>
-      <div
-        className={cn(
-          "xl:w-128 md:w-100 sm:w-96 w-96 m-auto",
-          styles.imageCardWrapper
-        )}
-      >
+      <div className={styles.imageCardWrapper}>
         {showCollectionName ? (
-          <div className="text-white font-primary xl:text-4xl md:text-3xl text-2xl relative font-extrabold truncate mb-4">
+          <div className={styles.collectionName}>
             {data?.garment ? data.garment.name : data.name}
           </div>
         ) : null}
