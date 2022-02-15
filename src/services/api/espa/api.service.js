@@ -1,6 +1,6 @@
-import { STAGE_ESPA_BACKEND_URL } from '@constants/global.constants';
-import { get, post, put } from '@utils/api';
-import axios from 'axios';
+import { STAGE_ESPA_BACKEND_URL } from "@constants/global.constants";
+import { get, post, put } from "@utils/api";
+import axios from "axios";
 
 class EspaApiService {
   constructor() {
@@ -13,11 +13,12 @@ class EspaApiService {
 
   async handleSignUp(account, userName, email, ip) {
     try {
-      const message = await post('/register', {
+      const message = await post("/register", {
         wallet: account,
         username: userName,
         email,
         ipAddrs: ip,
+        isMarketplace: true,
       });
       return message;
     } catch (e) {
@@ -27,24 +28,26 @@ class EspaApiService {
 
   async fetchAuthToken(account) {
     try {
-      const data = await post('/account-exists', {
+      const data = await post("/account-exists", {
         wallet: account,
+        isMarketplace: true,
       });
       if (data === 0) {
-        return '';
+        return "";
       }
       return data;
     } catch (e) {
-      return '';
+      return "";
     }
   }
 
   async handleAuthentication(account, signMsg, signature) {
     try {
-      const data = await post('/authenticate', {
+      const data = await post("/authenticate", {
         wallet: account,
         randomString: signMsg,
         signature,
+        isMarketplace: true,
       });
       return data;
     } catch (e) {
@@ -54,8 +57,9 @@ class EspaApiService {
 
   async checkUserName(username) {
     try {
-      const isExist = await get('/username-available', {
+      const isExist = await get("/username-available", {
         username,
+        isMarketplace: true,
       });
       return isExist | 0;
     } catch (e) {
@@ -65,7 +69,7 @@ class EspaApiService {
 
   async fetchNfts(account) {
     try {
-      const ntfs = await get('/get-nfts', {
+      const ntfs = await get("/get-nfts", {
         wallet: account,
       });
       return ntfs;
@@ -76,7 +80,7 @@ class EspaApiService {
 
   async getProfile() {
     try {
-      const user = await get('/profile');
+      const user = await get("/profile");
       return user;
     } catch (e) {
       return null;
@@ -85,7 +89,7 @@ class EspaApiService {
 
   async updateProfile(user) {
     try {
-      const data = await put('/profile', user);
+      const data = await put("/profile", user);
       return data;
     } catch (e) {
       return null;
@@ -94,7 +98,7 @@ class EspaApiService {
 
   async getPresignedUrl() {
     try {
-      const data = await get('/presigned-url');
+      const data = await get("/presigned-url");
       return data;
     } catch (e) {
       return null;
@@ -105,7 +109,7 @@ class EspaApiService {
     try {
       await axios.put(url, file, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
       });
       return true;
@@ -116,19 +120,20 @@ class EspaApiService {
 
   async getMyIP() {
     try {
-      const url = 'https://api.ipify.org/?format=json';
+      const url = "https://api.ipify.org/?format=json";
       const { data } = await axios.get(url);
       return data.ip;
     } catch (e) {
-      return '';
+      return "";
     }
   }
 
   async getViews(viewsType, viewsId) {
     try {
-      const views = await get('/get-views-by-id', {
+      const views = await get("/get-views-by-id", {
         viewsType,
         viewsId,
+        isMarketplace: true,
       });
       return views;
     } catch (e) {
@@ -138,7 +143,7 @@ class EspaApiService {
 
   async getAllUsersName() {
     try {
-      const allUsers = await get('/get-all-users-name');
+      const allUsers = await get("/get-all-users-name?isMarketplace=true");
       return allUsers;
     } catch (e) {
       return [];
@@ -147,11 +152,12 @@ class EspaApiService {
 
   async addLove(account, signMsg, viewsType, viewsId) {
     try {
-      const data = await post('/add-love', {
+      const data = await post("/add-love", {
         wallet: account,
         randomString: signMsg,
         viewsType,
         viewsId,
+        isMarketplace: true,
       });
       return data;
     } catch (e) {
@@ -161,7 +167,10 @@ class EspaApiService {
 
   async getUserByWalletAddress(wallet) {
     try {
-      const data = await get('/get-user-by-wallet', { wallet });
+      const data = await get("/get-user-by-wallet", {
+        wallet,
+        isMarketplace: true,
+      });
 
       return data;
     } catch (e) {
@@ -171,7 +180,7 @@ class EspaApiService {
 
   async getDesignerById(id) {
     try {
-      const data = await get('/get-designer-by-id', { designerId: id });
+      const data = await get("/get-designer-by-id", { designerId: id });
 
       return data;
     } catch (e) {
@@ -181,9 +190,10 @@ class EspaApiService {
 
   async addView(viewsType, viewsId) {
     try {
-      const data = await post('/add-view', {
+      const data = await post("/add-view", {
         viewsType,
         viewsId,
+        isMarketplace: true,
       });
       return data;
     } catch (e) {
