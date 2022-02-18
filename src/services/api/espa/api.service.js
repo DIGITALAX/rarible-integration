@@ -18,7 +18,6 @@ class EspaApiService {
         username: userName,
         email,
         ipAddrs: ip,
-        isMarketplace: true,
       });
       return message;
     } catch (e) {
@@ -30,7 +29,6 @@ class EspaApiService {
     try {
       const data = await post("/account-exists", {
         wallet: account,
-        isMarketplace: true,
       });
       if (data === 0) {
         return "";
@@ -47,7 +45,6 @@ class EspaApiService {
         wallet: account,
         randomString: signMsg,
         signature,
-        isMarketplace: true,
       });
       return data;
     } catch (e) {
@@ -59,7 +56,6 @@ class EspaApiService {
     try {
       const isExist = await get("/username-available", {
         username,
-        isMarketplace: true,
       });
       return isExist | 0;
     } catch (e) {
@@ -133,7 +129,6 @@ class EspaApiService {
       const views = await get("/get-views-by-id", {
         viewsType,
         viewsId,
-        isMarketplace: true,
       });
       return views;
     } catch (e) {
@@ -143,7 +138,7 @@ class EspaApiService {
 
   async getAllUsersName() {
     try {
-      const allUsers = await get("/get-all-users-name?isMarketplace=true");
+      const allUsers = await get("/get-all-users-name");
       return allUsers;
     } catch (e) {
       return [];
@@ -157,7 +152,6 @@ class EspaApiService {
         randomString: signMsg,
         viewsType,
         viewsId,
-        isMarketplace: true,
       });
       return data;
     } catch (e) {
@@ -169,7 +163,6 @@ class EspaApiService {
     try {
       const data = await get("/get-user-by-wallet", {
         wallet,
-        isMarketplace: true,
       });
 
       return data;
@@ -193,7 +186,6 @@ class EspaApiService {
       const data = await post("/add-view", {
         viewsType,
         viewsId,
-        isMarketplace: true,
       });
       return data;
     } catch (e) {
