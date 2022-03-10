@@ -1,22 +1,23 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { createPortal } from 'react-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import BigNumber from 'bignumber.js';
-import PropTypes from 'prop-types';
-import Button from '@components/buttons/button';
-import Modal from '@components/modal';
-import InputWithArrows from '@components/input-with-arrows';
-import { closePlaceBidModal } from '@actions/modals.actions';
-import bidActions from '@actions/bid.actions';
-import { getModalParams } from '@selectors/modal.selectors';
-import { utils as ethersUtils } from 'ethers';
+import React, { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
+import { useSelector, useDispatch } from "react-redux";
+import BigNumber from "bignumber.js";
+import PropTypes from "prop-types";
+import Button from "@components/buttons/button";
+import Modal from "@components/modal";
+import InputWithArrows from "@components/input-with-arrows";
+import { closePlaceBidModal } from "@actions/modals.actions";
+import bidActions from "@actions/bid.actions";
+import { getModalParams } from "@selectors/modal.selectors";
+import { utils as ethersUtils } from "ethers";
+import globalActions from "@actions/global.actions";
 import {
   getMinBidIncrement,
   getBidWithdrawalLockTime,
   getMonaPerEth,
   getChainId,
-} from '@selectors/global.selectors';
-import styles from './styles.module.scss';
+} from "@selectors/global.selectors";
+import styles from "./styles.module.scss";
 
 const ModalPlaceBid = ({ className, title, textForSelect, buttonText }) => {
   const dispatch = useDispatch();
@@ -29,7 +30,7 @@ const ModalPlaceBid = ({ className, title, textForSelect, buttonText }) => {
   const monaPerEth = useSelector(getMonaPerEth);
   const minBid = new BigNumber(priceEth).plus(new BigNumber(minBidIncrement));
   const chainId = useSelector(getChainId);
-  const isMatic = chainId === '0x13881' || chainId === '0x89';
+  const isMatic = chainId === "0x13881" || chainId === "0x89";
 
   const [inputPriceMona, setInputPriceMona] = useState(minBid);
   const [isDisabled, setIsDisabled] = useState(false);
@@ -42,55 +43,53 @@ const ModalPlaceBid = ({ className, title, textForSelect, buttonText }) => {
 
   const handleClick = () => {
     if (minBid.toNumber() > Number(inputPriceMona)) {
-      setShowError(`You must bid at least ${minBidIncrement} higher than the current highest bid`);
+      setShowError(
+        `You must bid at least ${minBidIncrement} higher than the current highest bid`
+      );
       return;
     }
     setShowError(null);
     setIsDisabled(true);
-    dispatch(bidActions.bid(id, Number(inputPriceMona), monaPerEth)).then((request) => {
-      requests.current.push(request);
-      request.promise
-        .then(() => {
-          if (approved === false) {
-            setApproved(true);
-            setIsDisabled(false);
-          } else {
-            handleClose();
-          }
-        })
-        .catch((e) => {
-          setShowError(e.message);
-          setIsDisabled(false);
-        });
-    });
-  };
-  useEffect(() => {
-    function getMonaApproval() {
-      dispatch(bidActions.getAllowanceForAcution()).then((val) => {
-        const jsAllowedValue = parseFloat(ethersUtils.formatEther(val));
-        console.log({jsAllowedValue})
-        if (jsAllowedValue < 10000000000) setApproved(false);
-        else setApproved(true);
+    dispatch(globalActions.setIsLoading(true));
+    dispatch(bidActions.bid(id, Number(inputPriceMona), monaPerEth))
+      .then((response) => {
+        console.log({ response });
+        dispatch(globalActions.setIsLoading(false));
+        handleClose();
+      })
+      .catch((error) => {
+        console.log({ error });
+        dispatch(globalActions.setIsLoading(false));
       });
-    }
-    getMonaApproval();
-  }, [inputPriceMona]);
+  };
+  // useEffect(() => {
+  //   function getMonaApproval() {
+  //     dispatch(bidActions.getAllowanceForAcution()).then((val) => {
+  //       const jsAllowedValue = parseFloat(ethersUtils.formatEther(val));
+  //       if (jsAllowedValue < 10000000000) setApproved(false);
+  //       else setApproved(true);
+  //     });
+  //   }
+  //   getMonaApproval();
+  // }, [inputPriceMona]);
 
   useEffect(() => {
-    return () => {
-      requests.current.forEach((request) => request.unsubscribe());
-      requests.current = [];
-    };
+    // return () => {
+    //   requests.current.forEach((request) => request.unsubscribe());
+    //   requests.current = [];
+    // };
   }, []);
 
   const hours = Math.trunc(bidWithdrawalLockTime / 60 / 60);
-  const minutes = hours ? bidWithdrawalLockTime % 60 : Math.trunc(bidWithdrawalLockTime / 60);
+  const minutes = hours
+    ? bidWithdrawalLockTime % 60
+    : Math.trunc(bidWithdrawalLockTime / 60);
 
-  const hoursTextPrefix = hours === 1 ? 'hour' : 'hours';
-  const minutesTextPrefix = minutes === 1 ? 'minute' : 'minutes';
+  const hoursTextPrefix = hours === 1 ? "hour" : "hours";
+  const minutesTextPrefix = minutes === 1 ? "minute" : "minutes";
 
-  const hoursText = hours ? `${hours} ${hoursTextPrefix}` : '';
-  const minutesText = minutes ? `${minutes} ${minutesTextPrefix}` : '';
+  const hoursText = hours ? `${hours} ${hoursTextPrefix}` : "";
+  const minutesText = minutes ? `${minutes} ${minutesTextPrefix}` : "";
 
   const text = [
     `Your MONA will be escrowed into a Smart Contract until the live auction ends or you choose to withdraw it. 
@@ -101,7 +100,12 @@ const ModalPlaceBid = ({ className, title, textForSelect, buttonText }) => {
   return (
     <>
       {createPortal(
-        <Modal onClose={() => handleClose()} title={title} text={text} className={className}>
+        <Modal
+          onClose={() => handleClose()}
+          title={title}
+          text={text}
+          className={className}
+        >
           <div className={styles.footer}>
             <p className={styles.footerCaption}>
               <span>{textForSelect}</span>
@@ -123,7 +127,7 @@ const ModalPlaceBid = ({ className, title, textForSelect, buttonText }) => {
                 onClick={() => handleClick()}
                 className={styles.button}
               >
-                {approved ? buttonText : 'APPROVE $MONA'}
+                {buttonText}
               </Button>
             </div>
           </div>
@@ -142,10 +146,10 @@ ModalPlaceBid.propTypes = {
 };
 
 ModalPlaceBid.defaultProps = {
-  className: '',
-  title: 'Place a Bid',
-  textForSelect: 'Minimum Bid:',
-  buttonText: 'PLACE A BID',
+  className: "",
+  title: "Place a Bid",
+  textForSelect: "Minimum Bid:",
+  buttonText: "PLACE A BID",
 };
 
 export default ModalPlaceBid;

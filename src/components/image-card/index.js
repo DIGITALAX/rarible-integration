@@ -64,11 +64,8 @@ const ImageCard = ({
     else if (data?.garment?.image || data?.image) setMainImageType(2);
   }, [data]);
 
-  console.log({ data });
-
   const onBuyNow = () => {
     if (!router.asPath.includes("product")) {
-      console.log("router.asPath: ", router.asPath);
       router
         .push(
           `/product/${v1 ? `v1-${data?.id}` : data?.id}/${getRarityId(

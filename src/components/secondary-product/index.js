@@ -1,149 +1,151 @@
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import ImageCard from '@components/image-card';
-import NewButton from '@components/buttons/newbutton';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import ImageCard from "@components/image-card";
+import NewButton from "@components/buttons/newbutton";
+import { useDispatch, useSelector } from "react-redux";
 import {
   openDelistModal,
   setIsDelistSuccess,
   setIsSecondaryProductUpdate,
-} from '@actions/modals.actions';
-import styles from './styles.module.scss';
-import OfferList from './offer-list';
-import Loader from '@components/loader';
-import bidActions from '@actions/bid.actions';
-import { getAccount } from '@selectors/user.selectors';
-import { getEnabledNetworkByChainId } from '@services/network.service';
-import { getChainId } from '@selectors/global.selectors';
-import { getSecondaryOrderByContractAndTokenId } from '@services/api/apiService';
-import config from '@utils/config';
+} from "@actions/modals.actions";
+import styles from "./styles.module.scss";
+import OfferList from "./offer-list";
+import Loader from "@components/loader";
+import bidActions from "@actions/bid.actions";
+import globalActions from "@actions/global.actions";
+import { getRaribleNftDataFromMeta } from "@utils/rarible";
+import { getItemById } from "@services/api/rarible.service";
 
-const SecondaryProduct = ({ product, defaultPrice, isListed = false }) => {
+const SecondaryProduct = () => {
+  const dispatch = useDispatch();
   const route = useRouter();
   const { id } = route.query;
-  const chainId = useSelector(getChainId);
-  const { isDelistSuccess, isSecondaryProductUpdate } = useSelector((state) => state.modals.toJS());
-  const [order, setOrder] = useState();
-  const [approved, setApproved] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const account = useSelector(getAccount);
-  const dispatch = useDispatch();
+  const { isDelistSuccess, isSecondaryProductUpdate } = useSelector((state) =>
+    state.modals.toJS()
+  );
+  const [product, setProduct] = useState();
   const [monaPrice, setMonaPrice] = useState(0);
+  const [updateError, setUpdateError] = useState(false);
 
-  const fetchApproved = async () => {
-    dispatch(bidActions.getSecondaryNftApproved(id.split('_')[0], id.split('_')[1]))
-      .then((res) => {
-        console.log({ res });
-        setApproved(res);
-      })
-      .catch((e) => {
-        console.log({ e });
-      });
-  };
-
-  const fetchOrder = async () => {
-    const network = getEnabledNetworkByChainId(chainId);
-    const { orders } = await getSecondaryOrderByContractAndTokenId(
-      config.NIX_URL[network.alias],
-      id.split('_')[0],
-      [id.split('_')[1]],
-    );
-
-    setOrder(orders.find((order) => order.maker === account.toLowerCase()));
+  const fetchProduct = async () => {
+    dispatch(globalActions.setIsLoading(true));
+    const token = await getItemById(`POLYGON:${id}`);
+    if (token.bestSellOrder?.makePrice) {
+      setMonaPrice(token.bestSellOrder.makePrice);
+    } else {
+      setMonaPrice(0);
+    }
+    setProduct({
+      ...token,
+      nftData: getRaribleNftDataFromMeta(token.meta),
+    });
+    dispatch(globalActions.setIsLoading(false));
   };
 
   useEffect(() => {
-    fetchOrder();
-    fetchApproved();
-  }, [isListed]);
+    if (isDelistSuccess || isSecondaryProductUpdate || updateError) {
+      setTimeout(() => {
+        dispatch(setIsDelistSuccess(false));
+        dispatch(setIsSecondaryProductUpdate(0));
+        setUpdateError(false);
+      }, 4000);
+    }
+  }, [isDelistSuccess, isSecondaryProductUpdate, updateError]);
+
+  useEffect(() => {
+    if (id && (isDelistSuccess || isSecondaryProductUpdate)) {
+      fetchProduct();
+    }
+  }, [id, isDelistSuccess, isSecondaryProductUpdate]);
 
   const onDelist = async () => {
-    if (!order) {
-      await fetchOrder();
+    if (product.bestSellOrder.id) {
+      dispatch(
+        openDelistModal({
+          orderId: product.bestSellOrder.id,
+        })
+      );
     }
-    dispatch(
-      openDelistModal({
-        tokenAddress: id.split('_')[0],
-        orderId: order.id.split('-')[1],
-      }),
-    );
   };
 
-  useEffect(() => {
-    if (defaultPrice) {
-      setMonaPrice(defaultPrice);
-    }
-  }, [defaultPrice]);
-
   const onList = async (monaPrice) => {
-    const token = id.split('_');
-    const tokenAddress = token[0];
-    const tokenId = token[1];
-    setLoading(true);
-    if (!approved) {
-      dispatch(bidActions.approveSecondaryNft(tokenAddress, tokenId))
+    if (!product?.bestSellOrder) {
+      dispatch(globalActions.setIsLoading(true));
+      dispatch(bidActions.addSecondaryMarketplaceProduct(id, monaPrice))
         .then((res) => {
-          setApproved(true);
-          setLoading(false);
+          dispatch(globalActions.setIsLoading(false));
+          dispatch(setIsSecondaryProductUpdate(1));
         })
         .catch((e) => {
-          setLoading(false);
+          dispatch(setIsSecondaryProductUpdate(0));
+          dispatch(globalActions.setIsLoading(false));
           console.log({ e });
         });
     } else {
-      if (!defaultPrice) {
-        dispatch(bidActions.addSecondaryMarketplaceProduct(tokenAddress, tokenId, monaPrice, 1))
-          .then((res) => {
-            dispatch(setIsDelistSuccess(false));
-            setLoading(false);
-            dispatch(setIsSecondaryProductUpdate(1));
-          })
-          .catch((e) => {
-            dispatch(setIsSecondaryProductUpdate(0));
-            setLoading(false);
-            console.log({ e });
-          });
+      if (monaPrice > product.bestSellOrder.makePrice) {
+        setUpdateError(true);
       } else {
+        dispatch(globalActions.setIsLoading(true));
         dispatch(
           bidActions.updateSecondaryMarketplaceOrder(
-            tokenAddress,
-            order.id.split('-')[1],
-            order.tokenIds,
-            monaPrice,
-          ),
+            product?.bestSellOrder.id,
+            monaPrice
+          )
         )
           .then((res) => {
-            dispatch(setIsDelistSuccess(false));
-            setLoading(false);
+            dispatch(globalActions.setIsLoading(false));
             dispatch(setIsSecondaryProductUpdate(2));
           })
           .catch((e) => {
             dispatch(setIsSecondaryProductUpdate(0));
-            setLoading(false);
+            dispatch(globalActions.setIsLoading(false));
             console.log({ e });
           });
       }
     }
   };
 
+  if (!product) {
+    return <Loader active />;
+  }
+
   return (
     <div className={styles.wrapper}>
-      {loading && <Loader active />}
       <div className={styles.topSection}>
-        <ImageCard showCollectionName data={product} showButton={false} />
+        <ImageCard
+          showCollectionName
+          data={product.nftData}
+          showButton={false}
+        />
       </div>
       <div className={styles.bottomSection}>
-        {isListed && <NewButton text="delist" className={styles.delistBtn} onClick={onDelist} />}
+        {product?.bestSellOrder && (
+          <NewButton
+            text="delist"
+            className={styles.delistBtn}
+            onClick={onDelist}
+          />
+        )}
         <div className={styles.title}>List NFT On Marketplace</div>
         <div className={styles.formGroup}>
-          <div className={styles.formLabel}>what PRICE WOULD YOU LIKE TO LIST THE ITEM FOR?</div>
+          <div className={styles.formLabel}>
+            what PRICE WOULD YOU LIKE TO LIST THE ITEM FOR?
+          </div>
           <div className={styles.inputGroup}>
-            <input type="text" value={monaPrice} onChange={(e) => setMonaPrice(e.target.value)} />
+            <input
+              type="text"
+              value={monaPrice}
+              onChange={(e) => setMonaPrice(e.target.value)}
+            />
             <div className={styles.prefix}> $MONA </div>
           </div>
         </div>
-        <button type="button" className={styles.listBtn} onClick={() => onList(monaPrice)}>
-          {approved ? (isListed ? 'update listing' : 'list on marketplace') : 'Approve'}
+        <button
+          type="button"
+          className={styles.listBtn}
+          onClick={() => onList(monaPrice)}
+        >
+          {product.bestSellOrder ? "update listing" : "list on marketplace"}
         </button>
 
         {!!isSecondaryProductUpdate && (
@@ -152,13 +154,17 @@ const SecondaryProduct = ({ product, defaultPrice, isListed = false }) => {
               <div className={styles.details}>
                 SUCCESS! YOUR ITEM IS NOW LIVE ON THE MARKETPLACE.
                 <br />
-                <a href={`/secondary-product/${id.replace('_', '-')}`}>VIEW YOUR ITEM LIVE HERE</a>
+                <a href={`/secondary-product/${id.replace("_", "-")}`}>
+                  VIEW YOUR ITEM LIVE HERE
+                </a>
               </div>
             ) : (
               <div className={styles.details}>
                 SUCCESS! YOU HAVE UPDATED YOUR LISTING PRICE.
                 <br />
-                <a href={`/secondary-product/${id.replace('_', '-')}`}>VIEW YOUR ITEM LIVE HERE</a>
+                <a href={`/secondary-product/${id.replace("_", "-")}`}>
+                  VIEW YOUR ITEM LIVE HERE
+                </a>
               </div>
             )}
           </>
@@ -167,6 +173,12 @@ const SecondaryProduct = ({ product, defaultPrice, isListed = false }) => {
           <div className={styles.details}>
             SUCCESS! YOUR ITEM was delisted from the
             <br /> marketplace. you can relist at any time.
+          </div>
+        )}
+        {updateError && (
+          <div className={styles.details}>
+            Error! Update price is greator than current price. <br />
+            Please delist and list again.
           </div>
         )}
       </div>

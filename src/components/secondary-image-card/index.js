@@ -1,16 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import InfoCard from '@components/info-card';
-import ImageCard from '@components/image-card';
-import PriceCard from '@components/price-card';
-import { useSelector } from 'react-redux';
-import { getRarityId } from '@utils/helpers';
-import { getChainId, getExchangeRateETH, getMonaPerEth } from '@selectors/global.selectors';
-import { useRouter } from 'next/router';
-import styles from './styles.module.scss';
-import { getEnabledNetworkByChainId } from '@services/network.service';
-import config from '@utils/config';
-import { getSecondaryOrderByContractTokenAndBuyorsell } from '@services/api/apiService';
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import InfoCard from "@components/info-card";
+import ImageCard from "@components/image-card";
+import PriceCard from "@components/price-card";
+import { useSelector } from "react-redux";
+import { getRarityId } from "@utils/helpers";
+import {
+  getChainId,
+  getExchangeRateETH,
+  getMonaPerEth,
+} from "@selectors/global.selectors";
+import { useRouter } from "next/router";
+import styles from "./styles.module.scss";
+import { getEnabledNetworkByChainId } from "@services/network.service";
+import config from "@utils/config";
+import { getSecondaryOrderByContractTokenAndBuyorsell } from "@services/api/apiService";
 
 const SecondaryImageCard = ({
   product,
@@ -33,21 +37,25 @@ const SecondaryImageCard = ({
         config.NIX_URL[network.alias],
         product?.contract?.id,
         [product?.tokenID],
-        'Buy',
+        "Buy"
       );
 
       setOffers(orders);
     };
 
-    fetchOrders();
+    // fetchOrders();
   }, [product]);
 
   const getPrice = () => {
     return (
       <>
-        {`${(price / 10 ** 18).toFixed(2)} $MONA`}
+        {`${product?.bestSellOrder?.makePrice} $MONA`}
         <span>
-          {` ($${((parseFloat(monaPerEth) * exchangeRate * price) / 10 ** 18).toFixed(2)})
+          {` ($${
+            parseFloat(monaPerEth) *
+            exchangeRate *
+            product?.bestSellOrder.makePrice
+          })
         `}
         </span>
       </>
@@ -64,42 +72,52 @@ const SecondaryImageCard = ({
       <>
         {`${(maxBid / 10 ** 18).toFixed(2)} $MONA`}
         <span>
-          {` ($${((parseFloat(monaPerEth) * exchangeRate * maxBid) / 10 ** 18).toFixed(2)})
+          {` ($${(
+            (parseFloat(monaPerEth) * exchangeRate * maxBid) /
+            10 ** 18
+          ).toFixed(2)})
         `}
         </span>
       </>
     );
   };
 
+  const generateUrl = (id) => {
+    const items = id.split(":");
+    return `/add-secondary-product/${items[1]}:${items[2]}`;
+  };
+
   return (
     <div className={styles.productInfoCardwrapper}>
       <div className={styles.imageWrapper}>
         <ImageCard
-          data={product}
+          data={product.nftData}
           showDesigner
-          offerCount={offers.length}
+          // offerCount={offers.length}
+          offerCount={0}
           showCollectionName={showCollectionName}
           showRarity={showRarity}
           showButton={false}
           isAuction={isAuction}
-          imgLink={`/add-secondary-product/${product?.id}`}
+          imgLink={generateUrl(product?.id)}
           withLink
         />
       </div>
       <div className={styles.infoCardWrapper}>
         <InfoCard bodyClass={styles.noHorizontalPadding}>
           <div className={styles.infoWrapper}>
-            <Link href={`/add-secondary-product/${product?.id}`}>
+            <Link href={generateUrl(product?.id)}>
               <a className={styles.link}>
                 <img src="/images/metaverse/gray_button2.png" />
                 <span>MANAGE ITEM</span>
               </a>
             </Link>
-            {price ? (
+            {product?.bestSellOrder ? (
               <PriceCard mainText={getPrice()} subText="LIST PRICE" />
-            ) : offers.length ? (
-              <PriceCard mainText={getHighestPrice()} subText="HIGHEST BID" />
             ) : null}
+            {/* // ) : offers.length ? (
+            //   <PriceCard mainText={getHighestPrice()} subText="HIGHEST BID" />
+            // ) : null} */}
           </div>
         </InfoCard>
       </div>

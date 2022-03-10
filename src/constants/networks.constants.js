@@ -1,37 +1,37 @@
 export const AVAILABLE_NETWORKS = [
   {
-    alias: 'mainnet',
+    alias: "mainnet",
     hex: 0x1,
-    name: 'Ethereum Main Network (MainNet)',
+    name: "Ethereum Main Network (MainNet)",
   },
   {
-    alias: 'ropsten',
+    alias: "ropsten",
     hex: 0x3,
-    name: 'Ropsten Test Network',
+    name: "Ropsten Test Network",
   },
   {
-    alias: 'rinkeby',
+    alias: "rinkeby",
     hex: 0x4,
-    name: 'Rinkeby Test Network',
+    name: "Rinkeby Test Network",
   },
   {
-    alias: 'goerli',
+    alias: "goerli",
     hex: 0x5,
-    name: 'Goerli Test Network',
+    name: "Goerli Test Network",
   },
   {
-    alias: 'kovan',
+    alias: "kovan",
     hex: 0x2a,
-    name: 'Kovan Test Network',
+    name: "Kovan Test Network",
   },
   {
-    alias: 'mumbai',
+    alias: "mumbai",
     hex: 0x13881,
-    name: 'Mumbai Test Network',
+    name: "Mumbai Test Network",
   },
   {
-    alias: 'matic',
+    alias: "polygon",
     hex: 0x89,
-    name: 'Matic Main Network',
+    name: "Matic Main Network",
   },
 ];

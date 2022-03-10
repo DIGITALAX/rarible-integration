@@ -2,25 +2,19 @@ import React, { useState, useEffect } from "react";
 import SecondaryImageCard from "@components/secondary-image-card";
 import PixelLoader from "@components/pixel-loader";
 import HeroSection from "@components/hero-section";
-import {
-  getAllNFTs,
-  getAllNFTsByOwner,
-  getDigitalaxMarketplaceV2Offers,
-  getSecondaryOrderByContractTokenAndBuyorsell,
-  getSecondaryOrderByOwner,
-  getSecondaryOrders,
-  getSellingNfts,
-  getNFTById,
-} from "@services/api/apiService";
 import { useSelector } from "react-redux";
 import { getAccount } from "@selectors/user.selectors";
 import { getEnabledNetworkByChainId } from "@services/network.service";
 import { getChainId } from "@selectors/global.selectors";
-import config from "@utils/config";
 import digitalaxApi from "@services/api/espa/api.service";
 import styles from "./styles.module.scss";
 import SecondaryInfoCard from "@components/secondary-info-card";
 import { filterOrders } from "@utils/helpers";
+import {
+  getAllItemsByOwner,
+  getListedOrdersByOwner,
+} from "@services/api/rarible.service";
+import { getRaribleNftDataFromMeta } from "@utils/rarible";
 
 const ManageInventory = () => {
   const [products, setProducts] = useState([]);
@@ -38,86 +32,48 @@ const ManageInventory = () => {
     const fetchNfts = async () => {
       setLoading(true);
       const network = getEnabledNetworkByChainId(chainId);
-      const { tokens } = await getAllNFTsByOwner(
-        account,
-        config.EIP721_URL[network.alias]
-      );
-      const { orders } = await getSecondaryOrderByOwner(
-        config.NIX_URL[network.alias],
-        account
-      );
-      const { orders: offs } = await getSecondaryOrders(
-        config.NIX_URL[network.alias]
-      );
-      const { nfts: all } = await getAllNFTs(config.NIX_URL[network.alias]);
-      const { orders: allOrds } = await getSellingNfts(
-        config.NIX_URL[network.alias]
-      );
-      const { digitalaxMarketplaceV2Offers } =
-        await getDigitalaxMarketplaceV2Offers(chainId);
+
+      const nfts = await getAllItemsByOwner(account);
+
       const allUsers = await digitalaxApi.getAllUsersName();
 
+      // const listedOrders = await getListedOrdersByOwner(account);
+
+      const polygonNfts = nfts.items.filter(
+        (nft) => nft.blockchain === "POLYGON"
+      );
       const nftData = [];
 
-      for (let i = 0; i < all.length; i += 1) {
-        const nft = all[i];
-        const { token } = await getNFTById(
-          `${nft?.token?.id}_${nft?.tokenId}`,
-          config.EIP721_URL[network.alias]
+      for (let i = 0; i < polygonNfts.length; i += 1) {
+        const nft = polygonNfts[i];
+        const designerAttribute = nft.meta.attributes.find(
+          (attribute) => attribute.key === "Designer"
         );
-        const { orders } = await getSecondaryOrderByContractTokenAndBuyorsell(
-          config.NIX_URL[network.alias],
-          nft?.token?.id,
-          [nft?.tokenId],
-          "Buy"
-        );
-        const attributes = (JSON.parse(token?.metadata) || {}).attributes;
-        const designer = attributes.find(
-          (attribute) => attribute.trait_type === "Designer"
-        )?.value;
+        if (!designerAttribute) continue;
         const designerData =
           (await digitalaxApi.getDesignerById(
-            designer === "Kodomodachi" ? "Mirth" : designer
+            designerAttribute.value === "Kodomodachi"
+              ? "Mirth"
+              : designerAttribute.value
           )) || [];
+        // const order = listedOrders.find(order => order.)
         const seller = allUsers.find(
-          (user) => user?.wallet?.toLowerCase() === token?.owner.id
+          (user) =>
+            user?.wallet?.toLowerCase() ===
+            nft?.creators[0].account.split(":")[1]
         );
-
         nftData.push({
           ...nft,
-          nftData: {
-            ...token,
-            designer: {
-              name: designerData[0]?.designerId,
-              image: designerData[0]?.image_url,
-            },
+          nftData: getRaribleNftDataFromMeta(nft.meta),
+          designer: {
+            name: designerData[0]?.designerId,
+            image: designerData[0]?.image_url,
           },
-          user: seller ? seller : {},
-          orders: filterOrders(orders),
+          seller,
         });
       }
-      const ownedOffers = offs.filter(
-        (offer) => offer.maker === account.toLowerCase()
-      );
-
-      setProducts([
-        ...tokens.filter((token) =>
-          digitalaxMarketplaceV2Offers.find((offer) =>
-            offer.garmentCollection?.garments?.find(
-              (garment) =>
-                garment.owner === token.owner.id && garment.id === token.tokenID
-            )
-          )
-        ),
-        // ...tokens,
-        ...nftData.filter((nft) => {
-          return ownedOffers.find((offer) => offer.tokenIds[0] === nft.tokenId);
-        }),
-      ]);
-      setOffers(filterOrders(offs));
+      setProducts([...nftData]);
       setNfts(nftData);
-      setOwnedOrders(filterOrders(orders));
-      setAllOrders(filterOrders(allOrds));
       setLoading(false);
     };
 
@@ -155,23 +111,23 @@ const ManageInventory = () => {
 
   const sortNfts = () => {
     switch (secondFilter) {
-      case "1":
-        return products.filter((nft) => {
-          return !!getPrice(nft);
-        });
-      case "2":
-        return !!products.filter((product) => {
-          return !!offers.filter(
-            (offer) => product.tokenID === offer.tokenIds[0]
-          ).length;
-        }).length;
-      case "3":
-        const ownedOffers = offers.filter(
-          (offer) => offer.maker === account.toLowerCase()
-        );
-        return nfts.filter((nft) => {
-          return ownedOffers.find((offer) => offer.tokenIds[0] === nft.tokenId);
-        });
+      // case "1":
+      //   return products.filter((nft) => {
+      //     return !!getPrice(nft);
+      //   });
+      // case "2":
+      //   return !!products.filter((product) => {
+      //     return !!offers.filter(
+      //       (offer) => product.tokenID === offer.tokenIds[0]
+      //     ).length;
+      //   }).length;
+      // case "3":
+      //   const ownedOffers = offers.filter(
+      //     (offer) => offer.maker === account.toLowerCase()
+      //   );
+      //   return nfts.filter((nft) => {
+      //     return ownedOffers.find((offer) => offer.tokenIds[0] === nft.tokenId);
+      //   });
       default:
         return products;
     }
@@ -179,7 +135,7 @@ const ManageInventory = () => {
 
   const filterNfts = (filteredNfts) => {
     return filteredNfts.filter((nft) =>
-      nft?.name.toLowerCase().includes(filter.toLowerCase())
+      nft?.meta.name.toLowerCase().includes(filter.toLowerCase())
     );
   };
 
@@ -193,7 +149,6 @@ const ManageInventory = () => {
         subTitle="WEB3 FASHION INVENTORY"
         filter={filter}
         setFilter={(v) => setFilter(v)}
-        // setSortBy={(v) => setSortBy(v)}
         secondFilter={secondFilter}
         secondFilterChange={(value) => {
           setSecondFilter(value);
@@ -202,15 +157,16 @@ const ManageInventory = () => {
       <div className="container mx-auto">
         <div className={styles.productsWrapper}>
           {filteredProducts.map((product) => {
-            if (secondFilter === "3" || product.nftData) {
+            if (secondFilter === "3") {
               return (
                 <SecondaryInfoCard
+                  key={product?.id}
                   product={product}
-                  offers={product.orders || []}
-                  user={product.user || {}}
+                  // offers={product.orders || []}
+                  // user={product.seller || {}}
                   nftData={product.nftData}
-                  order={getOrderForNFT(product)}
-                  key={product.id}
+                  // order={getOrderForNFT(product)}
+                  // key={product.id}
                   showCollectionName
                 />
               );
