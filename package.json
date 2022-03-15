@@ -24,6 +24,9 @@
     "@maticnetwork/maticjs": "^2.0.37",
     "@maticnetwork/walletconnect-provider": "^0.0.1-beta.1",
     "@pinata/sdk": "^1.1.11",
+    "@rarible/sdk": "^0.8.45",
+    "@rarible/types": "^0.8.0",
+    "@rarible/web3-ethereum": "^0.12.40-hotfix.0",
     "@sentry/browser": "^5.18.0",
     "@uniswap/sdk": "^3.0.3",
     "@uniswap/v2-periphery": "^1.1.0-beta.0",
@@ -90,6 +93,7 @@
     "sass": "^1.26.3",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^2.0.1",
+    "tslib": "^2.3.1",
     "tsparticles": "^1.32.0",
     "web3": "^1.6.1"
   },

@@ -49,6 +49,7 @@ const Secondary = () => {
           `${nft?.token?.id}_${nft?.tokenId}`,
           config.EIP721_URL[network.alias]
         );
+        if (!token) continue;
         const { orders } = await getSecondaryOrderByContractTokenAndBuyorsell(
           config.NIX_URL[network.alias],
           nft?.token?.id,
