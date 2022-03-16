@@ -11,12 +11,21 @@ export const getCurrency = (address) => ({
 export const getTokenAddress = (id) => `POLYGON:${id}`;
 
 export const getRaribleNftDataFromMeta = (meta) => {
-  return {
-    ...meta,
-    image: (meta.content?.find((content) => content["@type"] === "IMAGE") ?? {})
-      .url,
-    animation: (
-      meta.content?.find((content) => content["@type"] === "VIDEO") ?? {}
-    ).url,
-  };
+  if (meta.content) {
+    return {
+      ...meta,
+      image: (
+        meta.content?.find((content) => content["@type"] === "IMAGE") ?? {}
+      ).url,
+      animation: (
+        meta.content?.find((content) => content["@type"] === "VIDEO") ?? {}
+      ).url,
+    };
+  } else {
+    return {
+      ...meta,
+      image: meta.image.url.ORIGINAL,
+      animation: meta.animation.url.ORIGINAL,
+    };
+  }
 };

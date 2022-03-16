@@ -4,7 +4,6 @@ import InfoCard from "@components/info-card";
 import ImageCard from "@components/image-card";
 import PriceCard from "@components/price-card";
 import { useSelector } from "react-redux";
-import { getRarityId } from "@utils/helpers";
 import {
   getChainId,
   getExchangeRateETH,
@@ -12,13 +11,9 @@ import {
 } from "@selectors/global.selectors";
 import { useRouter } from "next/router";
 import styles from "./styles.module.scss";
-import { getEnabledNetworkByChainId } from "@services/network.service";
-import config from "@utils/config";
-import { getSecondaryOrderByContractTokenAndBuyorsell } from "@services/api/apiService";
 
 const SecondaryImageCard = ({
   product,
-  price,
   showCollectionName = false,
   showRarity = false,
   isAuction = false,
@@ -30,32 +25,16 @@ const SecondaryImageCard = ({
   const monaPerEth = useSelector(getMonaPerEth);
   const exchangeRate = useSelector(getExchangeRateETH);
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      const network = getEnabledNetworkByChainId(chainId);
-      const { orders } = await getSecondaryOrderByContractTokenAndBuyorsell(
-        config.NIX_URL[network.alias],
-        product?.contract?.id,
-        [product?.tokenID],
-        "Buy"
-      );
-
-      setOffers(orders);
-    };
-
-    // fetchOrders();
-  }, [product]);
-
   const getPrice = () => {
     return (
       <>
-        {`${product?.bestSellOrder?.makePrice} $MONA`}
+        {`${product?.price} $MONA`}
         <span>
-          {` ($${
+          {` ($${(
             parseFloat(monaPerEth) *
             exchangeRate *
-            product?.bestSellOrder.makePrice
-          })
+            product?.price
+          ).toFixed(2)})
         `}
         </span>
       </>

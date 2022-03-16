@@ -225,6 +225,75 @@ class BidActions extends BaseActions {
     };
   }
 
+  secondaryBid(id, contract, price) {
+    return async (_, getState) => {
+      const chainId = getState().global.get("chainId");
+      const network = getEnabledNetworkByChainId(chainId);
+      // const auctionContractAddress =
+      //   config.AUCTION_CONTRACT_ADDRESS[network.alias];
+      // const digitalaxNFTV2Address =
+      //   config.DIGITALAX_NFT_V2_ADDRESS[network.alias];
+      const monaContractAddress = await getMonaContractAddressByChainId(
+        chainId
+      );
+      const currency = getCurrency(monaContractAddress);
+      const tokenMultiChainAddress = `${contract}:${id}`;
+      const amount = 1;
+      const orderRequest = {
+        itemId: toItemId(tokenMultiChainAddress),
+      };
+      console.log({ orderRequest });
+      try {
+        const bidResponse = await window.raribleSdk.order.bid(orderRequest);
+        console.log({ bidResponse });
+        console.log({ currency });
+        const response = await bidResponse.submit({
+          amount,
+          price,
+          currency,
+        });
+        console.log({ response });
+        return response;
+      } catch (error) {
+        console.log({ error });
+        throw error;
+      }
+      // const monaContract = await getMonaTokenContract(monaContractAddress);
+      // const allowedValue = await monaContract.methods
+      //   .allowance(account, auctionContractAddress)
+      //   .call({ from: account });
+      // const jsAllowedValue = parseFloat(ethersUtils.formatEther(allowedValue));
+      // if (jsAllowedValue < 10000000000) {
+      //   const listener = monaContract.methods
+      //     .approve(auctionContractAddress, convertToWei(20000000000))
+      //     .send({ from: account });
+      //   const promise = new Promise((resolve, reject) => {
+      //     listener.on('error', (error) => reject(error));
+      //     listener.on('confirmation', (transactionHash) => resolve(transactionHash));
+      //   });
+      //   return {
+      //     promise,
+      //     unsubscribe: () => {
+      //       listener.off('error');
+      //       listener.off('transactionHash');
+      //     },
+      //   };
+      // }
+      // const listener = contract.methods.placeBid(id, weiValue).send({ from: account });
+      // const promise = new Promise((resolve, reject) => {
+      //   listener.on('error', (error) => reject(error));
+      //   listener.on('transactionHash', (transactionHash) => resolve(transactionHash));
+      // });
+      // return {
+      //   promise,
+      //   unsubscribe: () => {
+      //     listener.off('error');
+      //     listener.off('transactionHash');
+      //   },
+      // };
+    };
+  }
+
   cancelSecondaryItem(orderId) {
     return async (_, getState) => {
       const cancelOrderRequest = {
@@ -239,62 +308,21 @@ class BidActions extends BaseActions {
     };
   }
 
-  secondaryBuyNow(id, orderId, tokenAddress, value, buyOrSell = false) {
+  secondaryBuyNow(orderId) {
     return async (_, getState) => {
-      const account = getState().user.get("account");
-      const chainId = getState().global.get("chainId");
-      const address = await getMonaContractAddressByChainId(chainId);
-      const secondaryMarketplaceAddress =
-        await getSecondaryMarketplaceAddressByChainId(chainId);
-      const tokenContract = await getERC721Contract(tokenAddress);
-      if (!buyOrSell) {
-        const monaContract = await getMonaTokenContract(address);
+      const fillRequest = {
+        orderId: toOrderId(orderId),
+      };
+      try {
+        const fillResponse = await window.raribleSdk.order.fill(fillRequest);
 
-        const allowedValue = await monaContract.methods
-          .allowance(account, secondaryMarketplaceAddress)
-          .call({ from: account });
-        const jsAllowedValue = parseFloat(
-          ethersUtils.formatEther(allowedValue)
-        );
-        if (jsAllowedValue < 10000000000) {
-          await monaContract.methods
-            .approve(secondaryMarketplaceAddress, convertToWei(20000000000))
-            .send({ from: account });
-        }
-      }
-
-      const approved = await tokenContract.methods
-        .isApprovedForAll(account, secondaryMarketplaceAddress)
-        .call({ from: account });
-
-      if (!approved) {
-        await tokenContract.methods
-          .setApprovalForAll(secondaryMarketplaceAddress, true)
-          .send({
-            from: account,
-          });
-      }
-
-      const secondaryMarketplaceContract =
-        await getSecondaryMarketplaceContract(chainId);
-
-      const res = await secondaryMarketplaceContract.methods
-        .executeOrders(
-          [tokenAddress],
-          [orderId],
-          [[id]],
-          buyOrSell
-            ? ethersUtils.parseEther(`${parseFloat(value).toFixed(18)}`)
-            : ethersUtils.parseEther(`-${parseFloat(value).toFixed(18)}`),
-          100,
-          constants.AddressZero
-        )
-        .send({
-          from: account,
-          value: 0,
+        const response = await fillResponse.submit({
+          amount: 1, // Number of NFTs to buy
         });
-
-      return res;
+        return response;
+      } catch (error) {
+        console.log({ error });
+      }
     };
   }
 

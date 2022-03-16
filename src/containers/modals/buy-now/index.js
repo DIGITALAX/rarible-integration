@@ -1,29 +1,30 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { createPortal } from 'react-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { BigNumber, utils as ethersUtils } from 'ethers';
-import { getMonaPerEth, getChainId } from '@selectors/global.selectors';
-import PropTypes from 'prop-types';
-import Button from '@components/buttons/button';
-import Modal from '@components/modal';
+import React, { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { BigNumber, utils as ethersUtils } from "ethers";
+import { getMonaPerEth, getChainId } from "@selectors/global.selectors";
+import PropTypes from "prop-types";
+import Button from "@components/buttons/button";
+import Modal from "@components/modal";
 import {
   closeBuynowModal,
   openESPAReadyModal,
   openPurchaseSuccessModal,
-} from '@actions/modals.actions';
-import Loader from '@components/loader';
-import bidActions from '@actions/bid.actions';
-import { getModalParams } from '@selectors/modal.selectors';
-import { removeZeros } from '@helpers/price.helpers';
-import styles from './styles.module.scss';
+} from "@actions/modals.actions";
+import Loader from "@components/loader";
+import bidActions from "@actions/bid.actions";
+import { getModalParams } from "@selectors/modal.selectors";
+import { removeZeros } from "@helpers/price.helpers";
+import styles from "./styles.module.scss";
 
 const BuyNow = ({ className, title, buttonText1, buttonText2 }) => {
   const dispatch = useDispatch();
   const requests = useRef([]);
 
-  const { id, priceEth, secondary, orderId, tokenAddress } = useSelector(getModalParams);
+  const { id, priceEth, secondary, orderId, tokenAddress } =
+    useSelector(getModalParams);
   const chainId = useSelector(getChainId);
-  const isMatic = chainId === '0x13881' || chainId === '0x89';
+  const isMatic = chainId === "0x13881" || chainId === "0x89";
   const [loading, setLoading] = useState(false);
   const monaPerEth = useSelector(getMonaPerEth);
 
@@ -65,7 +66,7 @@ const BuyNow = ({ className, title, buttonText1, buttonText2 }) => {
           });
       });
     } else {
-      dispatch(bidActions.secondaryBuyNow(id, orderId.split('-')[1], tokenAddress, priceEth))
+      dispatch(bidActions.secondaryBuyNow(orderId))
         .then(() => {
           handleSuccess();
           setIsDisabled(false);
@@ -104,8 +105,6 @@ const BuyNow = ({ className, title, buttonText1, buttonText2 }) => {
   //   return <Loader active />;
   // }
 
-  console.log('priceEth:1 ', parseFloat(priceEth).toFixed(18))
-
   return (
     <>
       {createPortal(
@@ -119,15 +118,15 @@ const BuyNow = ({ className, title, buttonText1, buttonText2 }) => {
           <div className={styles.footer}>
             <p className={styles.footerCaption}>
               <span>
-                Need to top up $MONA? You can get it from{' '}
+                Need to top up $MONA? You can get it from{" "}
                 <a href="https://uniswap.org/" target="_blank">
                   Uniswap
-                </a>{' '}
-                and bridge it to Polygon with our customer{' '}
+                </a>{" "}
+                and bridge it to Polygon with our customer{" "}
                 <a href="https://skins.digitalax.xyz/bridge/" target="_blank">
                   Multi-Token Bridge
                 </a>
-                . Or, purchase it directly from{' '}
+                . Or, purchase it directly from{" "}
                 <a href="https://quickswap.exchange/" target="_blank">
                   Quickswap
                 </a>
@@ -135,19 +134,21 @@ const BuyNow = ({ className, title, buttonText1, buttonText2 }) => {
               </span>
             </p>
             <div className={styles.selectWrapper}>
-              <span>{removeZeros(`${parseFloat(priceEth).toFixed(4)}`)} $MONA</span>
+              <span>
+                {removeZeros(`${parseFloat(priceEth).toFixed(4)}`)} $MONA
+              </span>
               <Button
                 isDisabled={isDisabled || !isMatic}
                 onClick={() => handleClick(approved ? 1 : 0)}
                 className={styles.button}
               >
-                {approved ? buttonText1 : 'APPROVE $MONA'}
+                {approved ? buttonText1 : "APPROVE $MONA"}
               </Button>
             </div>
             {showError && <p className={styles.error}>{showError}</p>}
           </div>
         </Modal>,
-        document.body,
+        document.body
       )}
     </>
   );
@@ -161,10 +162,10 @@ BuyNow.propTypes = {
 };
 
 BuyNow.defaultProps = {
-  className: '',
-  title: 'BUY NOW',
-  buttonText1: 'USE $MONA',
-  buttonText2: 'USE ETH',
+  className: "",
+  title: "BUY NOW",
+  buttonText1: "USE $MONA",
+  buttonText2: "USE ETH",
 };
 
 export default BuyNow;

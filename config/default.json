@@ -25,6 +25,10 @@
     "matic": "https://api.thegraph.com/subgraphs/name/digitalax/nix-matic",
     "mumbai": "https://api.thegraph.com/subgraphs/name/digitalax/nix-mumbai"
   },
+  "RARIBLE_API_URL": {
+    "matic": "https://polygon-api.rarible.org/v0.1",
+    "mumbai": "https://polygon-api-staging.rarible.org/v0.1"
+  },
   "DLTA_API_URL": "https://api.thegraph.com/subgraphs/name/digitalax/the-dlta",
   "DEFAULT_NETWORK": "matic",
   "DEFAULT_WEB3_URL": "https://mainnet.infura.io/v3/6e9690131f584ee0a8b445ebb4740f8b",
@@ -46,6 +50,11 @@
     "goerli": "0xb0DED58EF09929b0A0F2b10f48D42883df97466E",
     "mumbai": "0xb0DED58EF09929b0A0F2b10f48D42883df97466E",
     "matic": "0xb0DED58EF09929b0A0F2b10f48D42883df97466E"
+  },
+  "MARKETPLACE_NFT_ADDRESS": {
+    "mainnet": "",
+    "matic": "0x7B2a989c4D1AD1B79a84CE2EB79dA5D8d9C2b7a7",
+    "mumbai": "0x1Bc6D640710759Be37E5DCD1b23B322250353751"
   },
   "DIGITAL_MARKETPLACE_ADDRESSES": {
     "mainnet": "0xCC48554581c17c2837C13B1685E0e784fADC1c3b",

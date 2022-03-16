@@ -1,31 +1,15 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React from "react";
 import Link from "next/link";
 import InfoCard from "@components/info-card";
 import ImageCard from "@components/image-card";
 import PriceCard from "@components/price-card";
 import NewButton from "@components/buttons/newbutton";
 import { useSelector } from "react-redux";
-import {
-  getExchangeRateETH,
-  getMonaPerEth,
-  getChainId,
-} from "@selectors/global.selectors";
-import { useRouter } from "next/router";
-import {
-  getNFTById,
-  getSecondaryOrderByContractTokenAndBuyorsell,
-} from "@services/api/apiService";
-import { getEnabledNetworkByChainId } from "@services/network.service";
-import config from "@utils/config";
-import apiService from "@services/api/espa/api.service";
+import { getExchangeRateETH, getMonaPerEth } from "@selectors/global.selectors";
 import styles from "./styles.module.scss";
 
 const SecondaryInfoCard = ({
   product,
-  // order,
-  // offers,
-  // user,
-  // nftData,
   showCollectionName = false,
   showRarity = false,
 }) => {
@@ -37,16 +21,16 @@ const SecondaryInfoCard = ({
   }
 
   const getPrice = () => {
-    if (product?.bestSellOrder) {
+    if (product?.price) {
       return (
         <>
-          {`${product?.bestSellOrder.makePrice} $MONA`}
+          {`${product?.price} $MONA`}
           <span>
-            {` ($${
+            {` ($${(
               parseFloat(monaPerEth) *
               exchangeRate *
-              product?.bestSellOrder.makePrice
-            })
+              product?.price
+            ).toFixed(2)})
             `}
           </span>
         </>
@@ -115,17 +99,13 @@ const SecondaryInfoCard = ({
             />
             <div className={styles.linkWrapper}>
               {product?.bestSellOrder && (
-                <Link
-                  href={`/secondary-product/${product?.id.replace("_", "-")}`}
-                >
+                <Link href={`/secondary-product/${product?.id}`}>
                   <a>
                     <NewButton text="Instant Buy" />
                   </a>
                 </Link>
               )}
-              <Link
-                href={`/secondary-product/${product?.id.replace("_", "-")}`}
-              >
+              <Link href={`/secondary-product/${product?.id}`}>
                 <a>
                   <NewButton text="Make Offer" />
                 </a>

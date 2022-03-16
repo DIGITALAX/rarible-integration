@@ -31,13 +31,15 @@ const {
   DLTA_API_URL,
   EIP721_URL,
   DIGITALAX_NFT_V2_ADDRESS,
+  MARKETPLACE_NFT_ADDRESS,
+  RARIBLE_API_URL,
   NIX_URL,
-} = require('config');
-const withImages = require('next-images');
+} = require("config");
+const withImages = require("next-images");
 
 module.exports = withImages({
   images: {
-    domains: ['digitalax.imgix.net', 'digitalax.mypinata.cloud'],
+    domains: ["digitalax.imgix.net", "digitalax.mypinata.cloud"],
   },
   publicRuntimeConfig: {
     BACKEND_API,
@@ -72,23 +74,28 @@ module.exports = withImages({
     DLTA_API_URL,
     EIP721_URL,
     DIGITALAX_NFT_V2_ADDRESS,
+    MARKETPLACE_NFT_ADDRESS,
+    RARIBLE_API_URL,
     NIX_URL,
   },
   trailingSlash: true,
-  assetPrefix: './',
+  assetPrefix: "./",
   webpack(cfg, { isServer }) {
     const originalEntry = cfg.entry;
     cfg.entry = async () => {
       const entries = await originalEntry();
-      if (entries['main.js'] && !entries['main.js'].includes('./polyfills.js')) {
-        entries['main.js'].unshift('./polyfills.js');
+      if (
+        entries["main.js"] &&
+        !entries["main.js"].includes("./polyfills.js")
+      ) {
+        entries["main.js"].unshift("./polyfills.js");
       }
       return entries;
     };
 
     if (!isServer) {
       cfg.node = {
-        ws: 'empty',
+        ws: "empty",
       };
     }
 

@@ -17,74 +17,78 @@ import digitalaxApi from "@services/api/espa/api.service";
 import styles from "./styles.module.scss";
 import { getAccount } from "@selectors/user.selectors";
 import { filterProducts, filterOrders } from "@utils/helpers";
+import {
+  getItemByIds,
+  getItemsByCollection,
+  getSellOrders,
+} from "@services/api/rarible.service";
+import { getRaribleNftDataFromMeta } from "@utils/rarible";
 
 const Secondary = () => {
   const [nfts, setNfts] = useState([]);
-  const [tokens, setTokens] = useState([]);
-  const [offers, setOffers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("");
   const [sortBy, setSortBy] = useState(null);
   const [secondFilter, setSecondFilter] = useState();
   const [listedOrders, setListedOrders] = useState([]);
-  const account = useSelector(getAccount);
   const chainId = useSelector(getChainId);
 
   useEffect(() => {
     const fetchNfts = async () => {
       setLoading(true);
       const network = getEnabledNetworkByChainId(chainId);
-      const { nfts } = await getAllNFTs(config.NIX_URL[network.alias]);
-      const { orders: offs } = await getSecondaryOrders(
-        config.NIX_URL[network.alias]
-      );
-      const { orders } = await getSellingNfts(config.NIX_URL[network.alias]);
-
-      const nftData = [];
-      const allUsers = await digitalaxApi.getAllUsersName();
-
-      for (let i = 0; i < nfts.length; i += 1) {
-        const nft = nfts[i];
-        const { token } = await getNFTById(
-          `${nft?.token?.id}_${nft?.tokenId}`,
-          config.EIP721_URL[network.alias]
+      let nftData = [];
+      try {
+        const { orders } = await getSellOrders(
+          config.MARKETPLACE_NFT_ADDRESS[network.alias],
+          network.alias
         );
-        if (!token) continue;
-        const { orders } = await getSecondaryOrderByContractTokenAndBuyorsell(
-          config.NIX_URL[network.alias],
-          nft?.token?.id,
-          [nft?.tokenId],
-          "Buy"
+        const items = await getItemByIds(
+          orders.map(
+            (order) =>
+              `${order.make.assetType.contract}:${order.make.assetType.tokenId}`
+          ),
+          network.alias
         );
-        const attributes = (JSON.parse(token?.metadata) || {}).attributes;
-        const designer = attributes.find(
-          (attribute) => attribute.trait_type === "Designer"
-        )?.value;
-        const designerData =
-          (await digitalaxApi.getDesignerById(
-            designer === "Kodomodachi" ? "Mirth" : designer
-          )) || [];
-        const seller = allUsers.find(
-          (user) => user.wallet?.toLowerCase() === token?.owner.id
-        );
+        const designers = await digitalaxApi.getAllDesigners();
+        const allUsers = await digitalaxApi.getAllUsersName();
+        for (let i = 0; i < items.length; i += 1) {
+          const attributes = items[i].meta.attributes;
+          const desId = attributes.find(
+            (attribute) => attribute.key === "Designer"
+          )?.value;
 
-        nftData.push({
-          ...nft,
-          nftData: {
-            ...token,
-            designer: {
-              name: designerData[0]?.designerId,
-              image: designerData[0]?.image_url,
+          const designerData = designers.data.find(
+            (designer) =>
+              designer.designerId ===
+              (desId === "Kodomodachi" ? "Mirth" : desId)
+          );
+          const order = orders.find(
+            (o) =>
+              o.make.assetType.contract === items[i].contract &&
+              o.make.assetType.tokenId === items[i].tokenId
+          );
+          const seller = allUsers.find(
+            (user) => user.wallet?.toLowerCase() === order.maker
+          );
+
+          nftData.push({
+            ...items[i],
+            price: order.makePrice,
+            nftData: {
+              ...getRaribleNftDataFromMeta(items[i].meta),
+              designer: {
+                name: designerData?.designerId,
+                image: designerData?.image_url,
+              },
             },
-          },
-          user: seller ?? {},
-          orders: filterOrders(orders),
-        });
+            seller,
+          });
+        }
+      } catch (e) {
+        console.log({ e });
       }
-
       setNfts(nftData);
-      setOffers(filterOrders(offs));
-      setListedOrders(filterOrders(orders));
       setLoading(false);
     };
 
@@ -128,10 +132,7 @@ const Secondary = () => {
             return (
               <SecondaryInfoCard
                 product={nft}
-                offers={nft.orders}
-                user={nft.user}
                 nftData={nft.nftData}
-                order={getOrderForNFT(nft)}
                 key={nft.id}
                 showCollectionName
               />

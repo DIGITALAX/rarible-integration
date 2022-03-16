@@ -45,6 +45,9 @@ import secondDesignerData from "src/data/second-designers.json";
 import { getEnabledNetworkByChainId } from "@services/network.service";
 import NewButton from "@components/buttons/newbutton";
 import { filterOrders } from "@utils/helpers";
+import { getItemById } from "@services/api/rarible.service";
+import Container from "@components/container";
+import { getRaribleNftDataFromMeta } from "@utils/rarible";
 
 const POLYGON_CHAINID = 0x89;
 
@@ -76,7 +79,7 @@ const Product = ({ pageTitle }) => {
   const { id } = router.query;
   const chainId = useSelector(getChainId);
   const [product, setProduct] = useState({});
-  const [order, setOrder] = useState();
+  // const [order, setOrder] = useState();
   const [tokenIds, setTokenIds] = useState([]);
   const [secondDesigners, setSecondDesigners] = useState([]);
   const monaPerEth = useSelector(getMonaPerEth);
@@ -166,9 +169,11 @@ const Product = ({ pageTitle }) => {
 
   useEffect(() => {
     const fetchGarmentV2ByID = async () => {
-      const contract = id.split("-")[0];
-      const tokenId = id.split("-")[1];
+      const contract = id.split(":")[0];
+      const tokenId = id.split(":")[1];
       const network = getEnabledNetworkByChainId(chainId);
+      const res = await getItemById(`POLYGON:${id}`);
+
       const { digitalaxCollectionGroups } =
         await getAllDigitalaxCollectionGroupsByGarment(
           config.API_URLS[network.alias],
@@ -183,21 +188,20 @@ const Product = ({ pageTitle }) => {
         config.NIX_URL[network.alias],
         id
       );
-      const { tokens } = await getNFTByContractAndTokenId(
-        config.EIP721_URL[network.alias],
-        contract,
-        tokenId
-      );
+      // const { tokens } = await getNFTByContractAndTokenId(
+      //   config.EIP721_URL[network.alias],
+      //   contract,
+      //   tokenId
+      // );
 
-      const attributes = JSON.parse(tokens[0].metadata).attributes;
-      const designer = attributes.find(
-        (attribute) => attribute.trait_type === "Designer"
+      const designer = res.meta.attributes.find(
+        (attribute) => attribute.key === "Designer"
       )?.value;
       const designerData = await digitalaxApi.getDesignerById(designer);
 
-      const filteredOrders = filterOrders(
-        orders.filter((order) => order?.buyOrSell === "Sell")
-      );
+      // const filteredOrders = filterOrders(
+      //   orders.filter((order) => order?.buyOrSell === "Sell")
+      // );
 
       const collectionGroup = digitalaxCollectionGroups.find(
         (collectionGroup) => collectionGroup.collections.length
@@ -207,11 +211,13 @@ const Product = ({ pageTitle }) => {
         setTotalAmount(collectionGroup.collections[0].garments.length);
       }
       setProduct({
-        ...tokens[0],
-        ...filteredOrders[filteredOrders.length - 1],
+        bestSellOrder: res.bestSellOrder,
+        price: res.bestSellOrder?.makePrice,
+        ...getRaribleNftDataFromMeta(res.meta),
         designer: designerData[0],
       });
-      setOrder(filteredOrders[filteredOrders.length - 1]);
+
+      // setOrder(filteredOrders[filteredOrders.length - 1]);
       const users = await digitalaxApi.getAllUsersName();
       dispatch(globalActions.setAllUsers(users));
       setNftInfo(nft);
@@ -286,23 +292,12 @@ const Product = ({ pageTitle }) => {
   }, [product]);
 
   const onHistory = (type) => {
-    if (type === 1) {
-      dispatch(
-        openSecondaryPurchaseHistory({
-          tokenIds: [order?.id || ""],
-          nftIds: [id.split("-")[1]],
-          type,
-        })
-      );
-    } else {
-      dispatch(
-        openSecondaryPurchaseHistory({
-          tokenIds: order?.tokenIds || [product?.tokenID],
-          contract: order?.token.id || product?.contract.id,
-          type,
-        })
-      );
-    }
+    dispatch(
+      openSecondaryPurchaseHistory({
+        itemId: id.replace("-", ":"),
+        type: type === 1 ? "SELL" : "BID",
+      })
+    );
   };
 
   const onBespokeBtn = () => {
@@ -310,25 +305,20 @@ const Product = ({ pageTitle }) => {
   };
 
   const onBuy = () => {
-    // if (product.buyOrSell === 'Sell') {
     dispatch(
       openBuynowModal({
-        id: product.tokenID,
-        orderId: product.id,
-        tokenAddress: product.contract.id,
-        priceEth: product.price / 10 ** 18,
+        orderId: product.bestSellOrder.id,
+        priceEth: product.price,
         secondary: true,
       })
     );
-    // }
   };
 
   const onMakeOffer = () => {
     dispatch(
       openMakeOfferModal({
-        id: product.tokenID,
-        orderId: order?.tokenIds || [product?.tokenID],
-        tokenAddress: order?.token.id || product?.contract.id,
+        contract: product.bestSellOrder.make.type.contract,
+        id: product.bestSellOrder.make.type.tokenId,
       })
     );
   };
@@ -357,12 +347,12 @@ const Product = ({ pageTitle }) => {
     if (typeof product.price !== "undefined") {
       return (
         <>
-          {(product.price / 10 ** 18).toFixed(2)}
+          {parseFloat(product.price).toFixed(2)}
           {" MONA "}
           <span>
             ($
             {(
-              (product.price / 10 ** 18) *
+              parseFloat(product.price) *
               parseFloat(monaPerEth) *
               exchangeRate
             ).toFixed(2)}
@@ -385,14 +375,14 @@ const Product = ({ pageTitle }) => {
 
       <div className={styles.wrapper}>
         <section className={styles.mainSection}>
-          <div className="container mx-auto">
+          <Container>
             <div className={styles.body}>
               <div className={styles.productName}> {product?.name} </div>
               <div className={styles.mainBody}>
                 <div className={styles.imageCardWrapper}>
                   <ImageCard
                     data={product}
-                    price={(product.price / 10 ** 18).toFixed(2)}
+                    // price={(product.price / 10 ** 18).toFixed(2)}
                     showButton={false}
                   />
 
@@ -507,9 +497,9 @@ const Product = ({ pageTitle }) => {
                         />
                       </div>
                       <div className={styles.buyWrapper}>
-                        {product?.buyOrSell && (
-                          <NewButton text="instant buy" onClick={onBuy} />
-                        )}
+                        {/* {product?.buyOrSell && ( */}
+                        <NewButton text="instant buy" onClick={onBuy} />
+                        {/* )} */}
                         <NewButton text="make offer" onClick={onMakeOffer} />
                       </div>
                     </div>
@@ -564,7 +554,7 @@ const Product = ({ pageTitle }) => {
                 </div>
               </div>
             </div>
-          </div>
+          </Container>
         </section>
         <BannerBar className={styles.homeHeroBar} type={2} />
         {product?.designer ? (
@@ -576,7 +566,7 @@ const Product = ({ pageTitle }) => {
                   type="video/mp4"
                 />
               </video>
-              <div className="container mx-auto">
+              <Container>
                 <div className={styles.designerBody}>
                   <div className={styles.title}> designer </div>
                   <div className={styles.data}>
@@ -656,7 +646,7 @@ const Product = ({ pageTitle }) => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </Container>
             </section>
 
             {secondDesigners &&
@@ -675,7 +665,7 @@ const Product = ({ pageTitle }) => {
                         type="video/mp4"
                       />
                     </video>
-                    <div className="container mx-auto">
+                    <Container>
                       <div className={styles.designerBody}>
                         <div className={styles.title}> designer </div>
                         <div className={styles.data}>
@@ -752,7 +742,7 @@ const Product = ({ pageTitle }) => {
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </Container>
                   </section>
                 );
               })}

@@ -181,6 +181,16 @@ class EspaApiService {
     }
   }
 
+  async getAllDesigners() {
+    try {
+      const data = await get("/get-all-designers");
+
+      return data;
+    } catch (e) {
+      return null;
+    }
+  }
+
   async addView(viewsType, viewsId) {
     try {
       const data = await post("/add-view", {
