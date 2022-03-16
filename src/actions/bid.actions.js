@@ -228,11 +228,6 @@ class BidActions extends BaseActions {
   secondaryBid(id, contract, price) {
     return async (_, getState) => {
       const chainId = getState().global.get("chainId");
-      const network = getEnabledNetworkByChainId(chainId);
-      // const auctionContractAddress =
-      //   config.AUCTION_CONTRACT_ADDRESS[network.alias];
-      // const digitalaxNFTV2Address =
-      //   config.DIGITALAX_NFT_V2_ADDRESS[network.alias];
       const monaContractAddress = await getMonaContractAddressByChainId(
         chainId
       );
@@ -242,11 +237,8 @@ class BidActions extends BaseActions {
       const orderRequest = {
         itemId: toItemId(tokenMultiChainAddress),
       };
-      console.log({ orderRequest });
       try {
         const bidResponse = await window.raribleSdk.order.bid(orderRequest);
-        console.log({ bidResponse });
-        console.log({ currency });
         const response = await bidResponse.submit({
           amount,
           price,
@@ -258,39 +250,6 @@ class BidActions extends BaseActions {
         console.log({ error });
         throw error;
       }
-      // const monaContract = await getMonaTokenContract(monaContractAddress);
-      // const allowedValue = await monaContract.methods
-      //   .allowance(account, auctionContractAddress)
-      //   .call({ from: account });
-      // const jsAllowedValue = parseFloat(ethersUtils.formatEther(allowedValue));
-      // if (jsAllowedValue < 10000000000) {
-      //   const listener = monaContract.methods
-      //     .approve(auctionContractAddress, convertToWei(20000000000))
-      //     .send({ from: account });
-      //   const promise = new Promise((resolve, reject) => {
-      //     listener.on('error', (error) => reject(error));
-      //     listener.on('confirmation', (transactionHash) => resolve(transactionHash));
-      //   });
-      //   return {
-      //     promise,
-      //     unsubscribe: () => {
-      //       listener.off('error');
-      //       listener.off('transactionHash');
-      //     },
-      //   };
-      // }
-      // const listener = contract.methods.placeBid(id, weiValue).send({ from: account });
-      // const promise = new Promise((resolve, reject) => {
-      //   listener.on('error', (error) => reject(error));
-      //   listener.on('transactionHash', (transactionHash) => resolve(transactionHash));
-      // });
-      // return {
-      //   promise,
-      //   unsubscribe: () => {
-      //     listener.off('error');
-      //     listener.off('transactionHash');
-      //   },
-      // };
     };
   }
 
@@ -305,6 +264,25 @@ class BidActions extends BaseActions {
       await tx.wait();
 
       return tx;
+    };
+  }
+
+  secondaryAcceptBid(orderId) {
+    return async (_, getState) => {
+      const fillRequest = {
+        orderId: toOrderId(orderId),
+      };
+      try {
+        const fillResponse = await window.raribleSdk.order.acceptBid(
+          fillRequest
+        );
+        const response = await fillResponse.submit({
+          amount: 1,
+        });
+        return response;
+      } catch (e) {
+        console.log({ e });
+      }
     };
   }
 

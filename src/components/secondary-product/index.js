@@ -23,8 +23,6 @@ const SecondaryProduct = () => {
   const { isDelistSuccess, isSecondaryProductUpdate } = useSelector((state) =>
     state.modals.toJS()
   );
-  const [listingType, setListingType] = useState(0);
-  const [dueDate, setDueDate] = useState(Date.now());
   const [product, setProduct] = useState();
   const [monaPrice, setMonaPrice] = useState(0);
   const [updateError, setUpdateError] = useState(false);
@@ -191,7 +189,12 @@ const SecondaryProduct = () => {
         )}
       </div>
 
-      <OfferList contract={product?.contract?.id} tokenId={product?.tokenID} />
+      <OfferList
+        itemId={`${product.bestSellOrder?.make.type.contract.split(":")[1]}:${
+          product.bestSellOrder?.make.type.tokenId
+        }`}
+        orderId={product?.bestSellOrder?.id}
+      />
     </div>
   );
 };

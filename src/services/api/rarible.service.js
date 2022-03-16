@@ -42,6 +42,12 @@ export const getItemsByCollection = (address) =>
     collection: `POLYGON:${address}`,
   });
 
+export const getOrderBidsByItem = (itemId) =>
+  window.raribleSdk.apis.order.getOrderBidsByItem({
+    itemId,
+    status: "ACTIVE",
+  });
+
 export const getSellOrders = (address, network) =>
   fetch(
     `${config.RARIBLE_API_URL[network]}/order/orders/sell/byCollectionAndByStatus?collection=${address}`
