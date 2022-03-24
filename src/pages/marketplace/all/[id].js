@@ -5,7 +5,7 @@ import PixelLoader from "@components/pixel-loader";
 import Container from "@components/container";
 import {
   getCollectionGroupById,
-  getDigitalaxMarketplaceV2Offers,
+  getDigitalaxMarketplaceV3Offers,
 } from "@services/api/apiService";
 import { useSelector } from "react-redux";
 import { getChainId } from "@selectors/global.selectors";
@@ -49,8 +49,8 @@ const Auctions = () => {
         });
       }
 
-      const { digitalaxMarketplaceV2Offers } =
-        await getDigitalaxMarketplaceV2Offers(chainId);
+      const { digitalaxMarketplaceV3Offers } =
+        await getDigitalaxMarketplaceV3Offers(chainId);
       if (
         !(
           digitalaxCollectionGroup.collections.length === 1 &&
@@ -58,7 +58,7 @@ const Auctions = () => {
         )
       ) {
         digitalaxCollectionGroup.collections.forEach((collection) => {
-          const foundOfferItem = digitalaxMarketplaceV2Offers.find(
+          const foundOfferItem = digitalaxMarketplaceV3Offers.find(
             (offer) => offer.id === collection.id
           );
           if (!foundOfferItem) return;

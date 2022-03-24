@@ -13,7 +13,7 @@ import PriceCard from "@components/price-card";
 import ProductPageLoader from "@components/product-page-loader";
 
 import {
-  getDigitalaxMarketplaceV2Offer,
+  getDigitalaxMarketplaceV3Offer,
   getGarmentByAuctionId,
   getGarmentV2ByAuctionId,
   getGarmentV2ByCollectionId,
@@ -196,8 +196,8 @@ const Product = ({ pageTitle }) => {
         const { digitalaxGarmentV2Collection } =
           await getGarmentV2ByCollectionId(chainId, id);
         if (digitalaxGarmentV2Collection.id) {
-          const { digitalaxMarketplaceV2Offers } =
-            await getDigitalaxMarketplaceV2Offer(
+          const { digitalaxMarketplaceV3Offers } =
+            await getDigitalaxMarketplaceV3Offer(
               chainId,
               digitalaxGarmentV2Collection.id
             );
@@ -239,24 +239,24 @@ const Product = ({ pageTitle }) => {
 
           setOwners(
             await getOwners(
-              digitalaxMarketplaceV2Offers[0].garmentCollection?.garments,
-              digitalaxMarketplaceV2Offers[0].amountSold,
+              digitalaxMarketplaceV3Offers[0].garmentCollection?.garments,
+              digitalaxMarketplaceV3Offers[0].amountSold,
               users
             )
           );
           setTokenIds(
-            digitalaxMarketplaceV2Offers[0].garmentCollection?.garments?.map(
+            digitalaxMarketplaceV3Offers[0].garmentCollection?.garments?.map(
               (garment) => garment.id
             )
           );
           setOffer({
-            id: digitalaxMarketplaceV2Offers[0].id,
-            primarySalePrice: digitalaxMarketplaceV2Offers[0].primarySalePrice,
-            startTime: digitalaxMarketplaceV2Offers[0].startTime,
-            endTime: digitalaxMarketplaceV2Offers[0].endTime,
-            amountSold: digitalaxMarketplaceV2Offers[0].amountSold,
+            id: digitalaxMarketplaceV3Offers[0].id,
+            primarySalePrice: digitalaxMarketplaceV3Offers[0].primarySalePrice,
+            startTime: digitalaxMarketplaceV3Offers[0].startTime,
+            endTime: digitalaxMarketplaceV3Offers[0].endTime,
+            amountSold: digitalaxMarketplaceV3Offers[0].amountSold,
             totalAmount:
-              digitalaxMarketplaceV2Offers[0].garmentCollection?.garments
+              digitalaxMarketplaceV3Offers[0].garmentCollection?.garments
                 ?.length,
           });
 

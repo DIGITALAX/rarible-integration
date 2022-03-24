@@ -187,7 +187,7 @@ export const onDesignerByIdsV2 = `
 
 export const onMarketplaceHistoryByIdsV2 = `
   subscription onMarketplaceHistoryByIds($ids: [ID!]) {
-    digitalaxMarketplaceV2PurchaseHistories(first: 1000, where: {garmentAuctionId_in: $ids}) {
+    digitalaxMarketplaceV3PurchaseHistories(first: 1000, where: {garmentAuctionId_in: $ids}) {
       id
       garmentAuctionId
       eventName
@@ -357,7 +357,7 @@ export const getAllDigitalaxGarmentsCollectionsV2 = `
 export const onDigitalaxMarketplaceOffersV2 = `
   subscription onDigitalaxMarketplaceOffers($ids: [ID!])
   {
-    digitalaxMarketplaceV2Offers(first: 1000, where: { id_in: $ids }) {
+    digitalaxMarketplaceV3Offers(first: 1000, where: { id_in: $ids }) {
       id
       primarySalePrice
       garmentCollection {
@@ -374,7 +374,7 @@ export const onDigitalaxMarketplaceOffersV2 = `
 export const allDigitalaxMarketplaceOffersV2 = `
   subscription onDigitalaxMarketplaceOffers
   {
-    digitalaxMarketplaceV2Offers(first: 1000) {
+    digitalaxMarketplaceV3Offers(first: 1000) {
       id
       primarySalePrice
       garmentCollection {

@@ -17,9 +17,9 @@ import {
   DIGITALAX_MARKETPLACE_OFFER,
   DIGITALAX_MARKETPLACE_OFFERS,
   DIGITALAX_MARKETPLACE_PURCHASE_HISTORIES,
-  DIGITALAX_MARKETPLACE_V2_OFFER,
-  DIGITALAX_MARKETPLACE_V2_OFFERS,
-  DIGITALAX_MARKETPLACE_V2_PURCHASE_HISTORIES,
+  DIGITALAX_MARKETPLACE_V3_OFFER,
+  DIGITALAX_MARKETPLACE_V3_OFFERS,
+  DIGITALAX_MARKETPLACE_V3_PURCHASE_HISTORIES,
   GARMENTV2_BY_AUCTION_ID,
   GARMENTV2_BY_COLLECTION_ID,
   GARMENTV2_BY_COLLECTION_IDS,
@@ -99,23 +99,23 @@ export const getGarmentV2ByAuctionId = async (chainId, id) =>
 export const getDigitalaxMarketplaceOffers = async (chainId) =>
   apiRequest(chainId, DIGITALAX_MARKETPLACE_OFFERS);
 
-export const getDigitalaxMarketplaceV2Offer = async (
+export const getDigitalaxMarketplaceV3Offer = async (
   chainId,
   garmentCollection
-) => apiRequest(chainId, DIGITALAX_MARKETPLACE_V2_OFFER, { garmentCollection });
+) => apiRequest(chainId, DIGITALAX_MARKETPLACE_V3_OFFER, { garmentCollection });
 
 export const getDigitalaxMarketplaceOffer = async (
   chainId,
   garmentCollection
 ) => apiRequest(chainId, DIGITALAX_MARKETPLACE_OFFER, { garmentCollection });
 
-export const getDigitalaxMarketplaceV2Offers = async (chainId) =>
-  apiRequest(chainId, DIGITALAX_MARKETPLACE_V2_OFFERS);
+export const getDigitalaxMarketplaceV3Offers = async (chainId) =>
+  apiRequest(chainId, DIGITALAX_MARKETPLACE_V3_OFFERS);
 
-export const getDigitalaxMarketplaceV2PurchaseHistories = async (
+export const getDigitalaxMarketplaceV3PurchaseHistories = async (
   chainId,
   ids
-) => apiRequest(chainId, DIGITALAX_MARKETPLACE_V2_PURCHASE_HISTORIES, { ids });
+) => apiRequest(chainId, DIGITALAX_MARKETPLACE_V3_PURCHASE_HISTORIES, { ids });
 
 export const getDigitalaxMarketplacePurchaseHistories = async (chainId, ids) =>
   apiRequest(chainId, DIGITALAX_MARKETPLACE_PURCHASE_HISTORIES, { ids });

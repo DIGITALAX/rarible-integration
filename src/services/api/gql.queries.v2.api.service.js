@@ -1,12 +1,15 @@
-import { gql } from 'graphql-request';
+import { gql } from "graphql-request";
 import {
   HISTORY_BID_PLACED_EVENT,
   HISTORY_BID_WITHDRAWN_EVENT,
-} from '@constants/history.constants';
+} from "@constants/history.constants";
 
 export const getLiveAuctionsV2 = gql`
   {
-    digitalaxGarmentV2Auctions(first: 1000, where: { resulted_not_in: [true] }) {
+    digitalaxGarmentV2Auctions(
+      first: 1000
+      where: { resulted_not_in: [true] }
+    ) {
       id
       reservePrice
       endTime
@@ -256,8 +259,8 @@ export const getCollectorsByIdV2 = gql`
 `;
 
 export const getDigitalaxMarketplaceV2PurchaseHistory = gql`
-  query digitalaxMarketplaceV2PurchaseHistories($buyer: ID!, $garmentId: Int!) {
-    digitalaxMarketplaceV2PurchaseHistories(
+  query digitalaxMarketplaceV3PurchaseHistories($buyer: ID!, $garmentId: Int!) {
+    digitalaxMarketplaceV3PurchaseHistories(
       where: { buyer: $buyer, garmentAuctionId: $garmentId }
     ) {
       id

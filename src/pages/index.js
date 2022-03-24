@@ -4,7 +4,7 @@ import Head from "next/head";
 import {
   getAllNFTs,
   getCollectionGroups,
-  getDigitalaxMarketplaceV2Offers,
+  getDigitalaxMarketplaceV3Offers,
   getNFTById,
   getSecondaryOrderByContractTokenAndBuyorsell,
   getSellingNfts,
@@ -88,8 +88,8 @@ const LandingPage = () => {
     const fetchCollectionGroups = async () => {
       setLoading(true);
       const { digitalaxCollectionGroups } = await getCollectionGroups(chainId);
-      const { digitalaxMarketplaceV2Offers } =
-        await getDigitalaxMarketplaceV2Offers(chainId);
+      const { digitalaxMarketplaceV3Offers } =
+        await getDigitalaxMarketplaceV3Offers(chainId);
       const users = await digitalaxApi.getAllUsersName();
       const network = getEnabledNetworkByChainId(chainId);
       const { nfts } = await getAllNFTs(config.NIX_URL[network.alias]);
@@ -129,7 +129,7 @@ const LandingPage = () => {
             collectionGroup.collections[0].id !== "0")
         ) {
           collectionGroup.collections.forEach((collection) => {
-            const offer = digitalaxMarketplaceV2Offers.find(
+            const offer = digitalaxMarketplaceV3Offers.find(
               (offer) => offer.id === collection.id
             );
             prods.push({
@@ -156,7 +156,7 @@ const LandingPage = () => {
             collectionGroup.digiBundle[0].id !== "0")
         ) {
           collectionGroup.digiBundle.forEach((collection) => {
-            const offer = digitalaxMarketplaceV2Offers.find(
+            const offer = digitalaxMarketplaceV3Offers.find(
               (offer) => offer.id === collection.id
             );
             prods.push({

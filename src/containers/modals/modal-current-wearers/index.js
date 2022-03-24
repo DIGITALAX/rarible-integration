@@ -1,50 +1,48 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import { createPortal } from 'react-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import styles from './styles.module.scss';
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import { createPortal } from "react-dom";
+import { useDispatch, useSelector } from "react-redux";
+import styles from "./styles.module.scss";
 
-import Modal from '@components/modal';
-import Loader from '@components/loader';
-import {
-  closeCurrentWearersModal,
-} from '@actions/modals.actions';
-import { getModalParams } from '@selectors/modal.selectors';
-import { getChainId, getAllUsers } from '@selectors/global.selectors';
+import Modal from "@components/modal";
+import Loader from "@components/loader";
+import { closeCurrentWearersModal } from "@actions/modals.actions";
+import { getModalParams } from "@selectors/modal.selectors";
+import { getChainId, getAllUsers } from "@selectors/global.selectors";
 import {
   getDigitalaxGarmentPurchaseHistories,
   getDigitalaxGarmentV2PurchaseHistories,
   getDigitalaxMarketplacePurchaseHistories,
-  getDigitalaxMarketplaceV2PurchaseHistories,
+  getDigitalaxMarketplaceV3PurchaseHistories,
   getDigitalaxGarmentV2s,
   getDigitalaxNFTStakersByGarments,
-  getGuildWhitelistedNFTStakersByGarments
-} from '@services/api/apiService';
-import digitalaxApi from '@services/api/espa/api.service'
-import config from '@utils/config'
-const POLYGON_CHAINID = 0x89
+  getGuildWhitelistedNFTStakersByGarments,
+} from "@services/api/apiService";
+import digitalaxApi from "@services/api/espa/api.service";
+import config from "@utils/config";
+const POLYGON_CHAINID = 0x89;
 
 const getAllResultsFromQuery = async (query, resultKey, chainId, owner) => {
-  let lastID = ''
-  let isContinue = true
-  const fetchCountPerOnce = 1000
+  let lastID = "";
+  let isContinue = true;
+  const fetchCountPerOnce = 1000;
 
-  const resultArray = []
+  const resultArray = [];
   while (isContinue) {
-    const result = await query(chainId, owner, fetchCountPerOnce, lastID)
-    if (!result[resultKey] || result[resultKey].length <= 0) isContinue = false
+    const result = await query(chainId, owner, fetchCountPerOnce, lastID);
+    if (!result[resultKey] || result[resultKey].length <= 0) isContinue = false;
     else {
-      resultArray.push(...result[resultKey])
+      resultArray.push(...result[resultKey]);
       if (result[resultKey].length < fetchCountPerOnce) {
-        isContinue = false
+        isContinue = false;
       } else {
-        lastID = result[resultKey][fetchCountPerOnce - 1]['id']
+        lastID = result[resultKey][fetchCountPerOnce - 1]["id"];
       }
     }
   }
-  
-  return resultArray
-}
+
+  return resultArray;
+};
 
 const ModalCurrentWearers = ({ className, title }) => {
   const dispatch = useDispatch();
@@ -55,7 +53,7 @@ const ModalCurrentWearers = ({ className, title }) => {
   const [loading, setLoading] = useState(true);
 
   const handleClose = () => {
-    dispatch(closeCurrentWearersModal())
+    dispatch(closeCurrentWearersModal());
   };
 
   const allUsers = useSelector(getAllUsers).toJS();
@@ -63,95 +61,118 @@ const ModalCurrentWearers = ({ className, title }) => {
   useEffect(() => {
     if (tokenIds.length) {
       const fetchHistories = async () => {
-        let soldItems = []
-        let historyItems = []
+        let soldItems = [];
+        let historyItems = [];
 
         if (type === 1) {
           if (parseInt(tokenIds[0]) <= 4) {
             const { digitalaxGarmentAuctionHistories } =
               await getDigitalaxGarmentPurchaseHistories(chainId, tokenIds[0]);
-            soldItems = digitalaxGarmentAuctionHistories.map(item => item.token.id)
-            historyItems = digitalaxGarmentAuctionHistories
+            soldItems = digitalaxGarmentAuctionHistories.map(
+              (item) => item.token.id
+            );
+            historyItems = digitalaxGarmentAuctionHistories;
           } else {
             const { digitalaxGarmentV2AuctionHistories } =
-              await getDigitalaxGarmentV2PurchaseHistories(chainId, tokenIds[0]);
-            soldItems = digitalaxGarmentV2AuctionHistories.map(item => item.token.id)
-            historyItems = digitalaxGarmentV2AuctionHistories
+              await getDigitalaxGarmentV2PurchaseHistories(
+                chainId,
+                tokenIds[0]
+              );
+            soldItems = digitalaxGarmentV2AuctionHistories.map(
+              (item) => item.token.id
+            );
+            historyItems = digitalaxGarmentV2AuctionHistories;
           }
           setLoading(false);
         } else {
           if (!v1) {
-            const { digitalaxMarketplaceV2PurchaseHistories } =
-              await getDigitalaxMarketplaceV2PurchaseHistories(chainId, tokenIds);
-            soldItems = digitalaxMarketplaceV2PurchaseHistories.map(item => item.id)
-            historyItems = digitalaxMarketplaceV2PurchaseHistories
+            const { digitalaxMarketplaceV3PurchaseHistories } =
+              await getDigitalaxMarketplaceV3PurchaseHistories(
+                chainId,
+                tokenIds
+              );
+            soldItems = digitalaxMarketplaceV3PurchaseHistories.map(
+              (item) => item.id
+            );
+            historyItems = digitalaxMarketplaceV3PurchaseHistories;
           } else {
-            const { digitalaxMarketplacePurchaseHistories } = await getDigitalaxMarketplacePurchaseHistories(chainId, tokenIds);
-            soldItems = digitalaxMarketplacePurchaseHistories.map(item => item.id)
-            historyItems = digitalaxMarketplacePurchaseHistories
+            const { digitalaxMarketplacePurchaseHistories } =
+              await getDigitalaxMarketplacePurchaseHistories(chainId, tokenIds);
+            soldItems = digitalaxMarketplacePurchaseHistories.map(
+              (item) => item.id
+            );
+            historyItems = digitalaxMarketplacePurchaseHistories;
           }
         }
 
-        const { digitalaxGarmentV2S } = await getDigitalaxGarmentV2s(chainId, soldItems)
+        const { digitalaxGarmentV2S } = await getDigitalaxGarmentV2s(
+          chainId,
+          soldItems
+        );
 
         const digitalaxAllNFTStakersByGarments = await getAllResultsFromQuery(
-          getDigitalaxNFTStakersByGarments, 
-          'digitalaxNFTStakers', 
+          getDigitalaxNFTStakersByGarments,
+          "digitalaxNFTStakers",
           POLYGON_CHAINID,
           soldItems
-        )
+        );
 
         const guildAllNFTStakersByGarments = await getAllResultsFromQuery(
-          getGuildWhitelistedNFTStakersByGarments, 
-          'guildWhitelistedNFTStakers', 
+          getGuildWhitelistedNFTStakersByGarments,
+          "guildWhitelistedNFTStakers",
           POLYGON_CHAINID,
-          soldItems.map(item => config.DTX_ADDRESSES['matic'].toLowerCase() + '-' + item)
-        )
+          soldItems.map(
+            (item) => config.DTX_ADDRESSES["matic"].toLowerCase() + "-" + item
+          )
+        );
 
-        const digitalaxStakedGarments = {}
+        const digitalaxStakedGarments = {};
         digitalaxAllNFTStakersByGarments
-          .filter(
-            item => item.garments && item.garments.length > 0
-          )
-          .map(staker => {
-            staker.garments.forEach(garment => {
-              digitalaxStakedGarments[garment.id] = staker.id
-            })
-          })
-        
+          .filter((item) => item.garments && item.garments.length > 0)
+          .map((staker) => {
+            staker.garments.forEach((garment) => {
+              digitalaxStakedGarments[garment.id] = staker.id;
+            });
+          });
+
         guildAllNFTStakersByGarments
-          .filter(
-            item => item.garments && item.garments.length > 0
-          )
-          .map(staker => {
-            staker.garments.forEach(garment => {
-              digitalaxStakedGarments[garment.id.split('-')[1]] = staker.id
-            })
+          .filter((item) => item.garments && item.garments.length > 0)
+          .map((staker) => {
+            staker.garments.forEach((garment) => {
+              digitalaxStakedGarments[garment.id.split("-")[1]] = staker.id;
+            });
+          });
+        setWearers(
+          digitalaxGarmentV2S.map((garment) => {
+            let actualOwner = garment.owner.toLowerCase();
+            if (
+              digitalaxStakedGarments &&
+              digitalaxStakedGarments[garment.id]
+            ) {
+              actualOwner = digitalaxStakedGarments[garment.id].toLowerCase();
+            }
+
+            const user = allUsers.find(
+              (user) => user.wallet && user.wallet.toLowerCase() == actualOwner
+            );
+            const history = historyItems.find(
+              (history) =>
+                (type ? history.token.id : history.id) == garment.id &&
+                (type ? history.bidder.id : history.buyer).toLowerCase() ==
+                  actualOwner
+            );
+
+            return {
+              id: garment.id,
+              owner: actualOwner,
+              ownerAvatar: user ? user.avatar : null,
+              ownerName: user ? user.username : null,
+              timestamp: history ? history.timestamp : 0,
+              transactionHash: history ? history.transactionHash : null,
+            };
           })
-        setWearers(digitalaxGarmentV2S.map(garment => {
-          
-          let actualOwner = garment.owner.toLowerCase()
-          if (digitalaxStakedGarments && digitalaxStakedGarments[garment.id]) {
-            actualOwner = digitalaxStakedGarments[garment.id].toLowerCase()
-          }
-
-          const user = allUsers.find(user => user.wallet && user.wallet.toLowerCase() == actualOwner)
-          const history = historyItems.find(
-            history =>
-              (type ? history.token.id : history.id) == garment.id 
-              && (type ? history.bidder.id : history.buyer).toLowerCase() == actualOwner
-          )
-
-          return {
-            id: garment.id,
-            owner: actualOwner,
-            ownerAvatar: user ? user.avatar : null,
-            ownerName: user ? user.username: null,
-            timestamp: history ? history.timestamp : 0,
-            transactionHash: history ? history.transactionHash : null
-          }
-        }))
-        setLoading(false);        
+        );
+        setLoading(false);
       };
 
       fetchHistories();
@@ -165,14 +186,14 @@ const ModalCurrentWearers = ({ className, title }) => {
       if (parseInt(b.timestamp) == 0) return -1;
       if (parseInt(a.timestamp) > parseInt(b.timestamp)) return 1;
       return -1;
-    })
-  }
+    });
+  };
 
-  const onClickWearer = ownerInfo => {
+  const onClickWearer = (ownerInfo) => {
     if (ownerInfo.ownerName !== null) {
-      window.open(`/user/${ownerInfo.owner}`, '_self')
+      window.open(`/user/${ownerInfo.owner}`, "_self");
     }
-  }
+  };
 
   return (
     <>
@@ -201,37 +222,55 @@ const ModalCurrentWearers = ({ className, title }) => {
                         <td>
                           <img
                             className={styles.ownerAvatar}
-                            src={`${ownerInfo.ownerAvatar ? ownerInfo.ownerAvatar : '/images/user-profile/user-avatar-black.png'}`}
+                            src={`${
+                              ownerInfo.ownerAvatar
+                                ? ownerInfo.ownerAvatar
+                                : "/images/user-profile/user-avatar-black.png"
+                            }`}
                           />
                         </td>
                         <td>
-                          {' '}
-                          {ownerInfo.ownerName ? ownerInfo.ownerName : `${ownerInfo.owner.slice(0, 8)}...`}
+                          {" "}
+                          {ownerInfo.ownerName
+                            ? ownerInfo.ownerName
+                            : `${ownerInfo.owner.slice(0, 8)}...`}
                         </td>
-                        {
-                          ownerInfo.ownerName
-                          ? (
-                            <td> {ownerInfo.timestamp ? new Date(parseInt(ownerInfo.timestamp) * 1000).toDateString() : ''} </td>
-                          )
-                          : (
-                            <td colspan='2'> No active account with DIGITALAX </td>
-                          )
-                        }
-                        {
-                          ownerInfo.ownerName
-                          && (
-                            <td> {ownerInfo.transactionHash ? `${ownerInfo.transactionHash.slice(0, 8)}...` : ''} </td>
-                          )
-                        }
-                         
+                        {ownerInfo.ownerName ? (
+                          <td>
+                            {" "}
+                            {ownerInfo.timestamp
+                              ? new Date(
+                                  parseInt(ownerInfo.timestamp) * 1000
+                                ).toDateString()
+                              : ""}{" "}
+                          </td>
+                        ) : (
+                          <td colspan="2">
+                            {" "}
+                            No active account with DIGITALAX{" "}
+                          </td>
+                        )}
+                        {ownerInfo.ownerName && (
+                          <td>
+                            {" "}
+                            {ownerInfo.transactionHash
+                              ? `${ownerInfo.transactionHash.slice(0, 8)}...`
+                              : ""}{" "}
+                          </td>
+                        )}
                       </tr>
                     ))}
-                    {!wearers.length && <tr> <td colSpan="4">No Wearers</td> </tr>}
+                    {!wearers.length && (
+                      <tr>
+                        {" "}
+                        <td colSpan="4">No Wearers</td>{" "}
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>
             </Modal>,
-            document.body,
+            document.body
           )}
         </>
       )}
@@ -241,12 +280,12 @@ const ModalCurrentWearers = ({ className, title }) => {
 
 ModalCurrentWearers.propTypes = {
   className: PropTypes.string,
-  title: PropTypes.string
+  title: PropTypes.string,
 };
 
 ModalCurrentWearers.defaultProps = {
-  className: '',
-  title: 'Current Wearers'
+  className: "",
+  title: "Current Wearers",
 };
 
 export default ModalCurrentWearers;
