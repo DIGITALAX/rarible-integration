@@ -1,20 +1,23 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import Router, { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
-import throttle from 'lodash.throttle';
-import cn from 'classnames';
-import Link from 'next/link';
-import Button from '@components/buttons/button';
-import SmallPhotoWithText from '@components/small-photo-with-text';
-import { getUser } from '@selectors/user.selectors';
-import { getChainId } from '@selectors/global.selectors';
-import { openConnectMetamaskModal } from '@actions/modals.actions';
-import accountActions from '@actions/user.actions';
-import { getEnabledNetworkByChainId, requestSwitchNetwork } from '@services/network.service';
+import React, { useEffect, useState, useMemo } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import Router, { useRouter } from "next/router";
+import PropTypes from "prop-types";
+import throttle from "lodash.throttle";
+import cn from "classnames";
+import Link from "next/link";
+import Button from "@components/buttons/button";
+import SmallPhotoWithText from "@components/small-photo-with-text";
+import { getUser } from "@selectors/user.selectors";
+import { getChainId } from "@selectors/global.selectors";
+import { openConnectMetamaskModal } from "@actions/modals.actions";
+import accountActions from "@actions/user.actions";
+import {
+  getEnabledNetworkByChainId,
+  requestSwitchNetwork,
+} from "@services/network.service";
 
-import Logo from './logo';
-import styles from './styles.module.scss';
+import Logo from "./logo";
+import styles from "./styles.module.scss";
 
 const HeaderTopLine = ({ className, isShowStaking, buttonText, linkText }) => {
   const [hasScrolled, setHasScrolled] = useState(false);
@@ -31,9 +34,9 @@ const HeaderTopLine = ({ className, isShowStaking, buttonText, linkText }) => {
       }
     }, 200);
 
-    document.addEventListener('scroll', handleScroll);
+    document.addEventListener("scroll", handleScroll);
     return () => {
-      document.removeEventListener('scroll', handleScroll);
+      document.removeEventListener("scroll", handleScroll);
     };
   }, [hasScrolled]);
 
@@ -49,16 +52,16 @@ const HeaderTopLine = ({ className, isShowStaking, buttonText, linkText }) => {
   const pathname = router.pathname;
 
   const isOnRightNetwork =
-    pathname !== '/bridge' &&
-    pathname !== '/bridge/deposit' &&
-    !pathname.includes('withdraw/pending');
+    pathname !== "/bridge" &&
+    pathname !== "/bridge/deposit" &&
+    !pathname.includes("withdraw/pending");
 
   const wrongNetworkText =
-    pathname !== '/bridge' && pathname !== '/bridge/deposit'
-      ? network?.alias !== 'matic'
-        ? 'Please switch to Matic Network'
-        : ''
-      : 'Please switch to Mainnet';
+    pathname !== "/bridge" && pathname !== "/bridge/deposit"
+      ? network?.alias !== "matic"
+        ? "Please switch to Matic Network"
+        : ""
+      : "Please switch to Mainnet";
 
   const switchNetwork = async () => {
     const res = await requestSwitchNetwork();
@@ -78,7 +81,7 @@ const HeaderTopLine = ({ className, isShowStaking, buttonText, linkText }) => {
 
   const handleProfileClick = () => {
     setIsShowMenu(false);
-    Router.push('/profile').then(() => window.scrollTo(0, 0));
+    Router.push("/profile").then(() => window.scrollTo(0, 0));
   };
   const handleLogoutClick = () => {
     setIsShowMenu(false);
@@ -86,26 +89,28 @@ const HeaderTopLine = ({ className, isShowStaking, buttonText, linkText }) => {
   };
   const handleManageInventory = () => {
     setIsShowMenu(false);
-    Router.push('/manage-inventory').then(() => window.scrollTo(0, 0));
+    Router.push("/inventories").then(() => window.scrollTo(0, 0));
   };
-
-  console.log({ isOnRightNetwork });
 
   return (
     <div
       className={cn(
         className,
         styles.wrapper,
-        hasScrolled ? styles.floatingNav : '',
-        pathname.includes('bridge') ? styles.bridgeHeader : '',
+        hasScrolled ? styles.floatingNav : "",
+        pathname.includes("bridge") ? styles.bridgeHeader : ""
       )}
     >
-      {!isOnRightNetwork && <p className={styles.notification}>{wrongNetworkText}</p>}
+      {!isOnRightNetwork && (
+        <p className={styles.notification}>{wrongNetworkText}</p>
+      )}
       <div className={styles.leftBox}>
         <Logo black={false} />
       </div>
       <div className={styles.rightBox}>
-        <div className={cn(styles.links, isCollapse ? styles.expandedMenu : '')}>
+        <div
+          className={cn(styles.links, isCollapse ? styles.expandedMenu : "")}
+        >
           <Link href="https://designers.digitalax.xyz/getdressed/">
             <a className={styles.link} target="_blank">
               GET CUSTOM DRESSED
@@ -131,21 +136,27 @@ const HeaderTopLine = ({ className, isShowStaking, buttonText, linkText }) => {
             <a className={styles.link}>BRIDGE MONA</a>
           </Link>
         </div>
-        {network?.alias !== 'matic' ? (
-          <Button onClick={() => switchNetwork()} className={styles.switchNetwork}>
+        {network?.alias !== "matic" ? (
+          <Button
+            onClick={() => switchNetwork()}
+            className={styles.switchNetwork}
+          >
             Switch Network
           </Button>
         ) : null}
         <div className={styles.signBtn}>
           {user ? (
-            <div className={styles.buttonWrapper} onClick={() => setIsShowMenu(!isShowMenu)}>
+            <div
+              className={styles.buttonWrapper}
+              onClick={() => setIsShowMenu(!isShowMenu)}
+            >
               <SmallPhotoWithText
                 photo={
-                  user.get('avatar')
-                    ? user.get('avatar')
-                    : './images/user-profile/user-avatar-black.png'
+                  user.get("avatar")
+                    ? user.get("avatar")
+                    : "./images/user-profile/user-avatar-black.png"
                 }
-                address={user.get('username')}
+                address={user.get("username")}
                 className={styles.hashAddress}
               >
                 <button className={styles.arrowBottom}>
@@ -158,20 +169,32 @@ const HeaderTopLine = ({ className, isShowStaking, buttonText, linkText }) => {
               </SmallPhotoWithText>
               {isShowMenu && (
                 <div className={styles.menuWrapper}>
-                  <button onClick={() => handleProfileClick()} className={styles.menuButton}>
+                  <button
+                    onClick={() => handleProfileClick()}
+                    className={styles.menuButton}
+                  >
                     Profile
                   </button>
-                  <button onClick={() => handleManageInventory()} className={styles.menuButton}>
+                  <button
+                    onClick={() => handleManageInventory()}
+                    className={styles.menuButton}
+                  >
                     Manage Inventory
                   </button>
-                  <button onClick={() => handleLogoutClick()} className={styles.menuButton}>
+                  <button
+                    onClick={() => handleLogoutClick()}
+                    className={styles.menuButton}
+                  >
                     Logout
                   </button>
                 </div>
               )}
             </div>
           ) : (
-            <Button className={styles.signInButton} onClick={() => handleClick()}>
+            <Button
+              className={styles.signInButton}
+              onClick={() => handleClick()}
+            >
               {buttonText}
             </Button>
           )}
@@ -185,11 +208,18 @@ const HeaderTopLine = ({ className, isShowStaking, buttonText, linkText }) => {
           {user ? (
             <div className={styles.buttonWrapper}>
               <SmallPhotoWithText
-                photo={user.get('avatar') ? user.get('avatar') : './images/user-photo.svg'}
-                address={user.get('username')}
+                photo={
+                  user.get("avatar")
+                    ? user.get("avatar")
+                    : "./images/user-photo.svg"
+                }
+                address={user.get("username")}
                 className={styles.hashAddress}
               >
-                <button className={styles.arrowBottom} onClick={() => setIsShowMenu(!isShowMenu)}>
+                <button
+                  className={styles.arrowBottom}
+                  onClick={() => setIsShowMenu(!isShowMenu)}
+                >
                   <img
                     className={styles.arrowBottomImg}
                     src="./images/icons/arrow-bottom.svg"
@@ -199,10 +229,16 @@ const HeaderTopLine = ({ className, isShowStaking, buttonText, linkText }) => {
               </SmallPhotoWithText>
               {isShowMenu && (
                 <div className={styles.menuWrapper}>
-                  <button onClick={() => handleProfileClick()} className={styles.menuButton}>
+                  <button
+                    onClick={() => handleProfileClick()}
+                    className={styles.menuButton}
+                  >
                     Profile
                   </button>
-                  <button onClick={() => handleLogoutClick()} className={styles.menuButton}>
+                  <button
+                    onClick={() => handleLogoutClick()}
+                    className={styles.menuButton}
+                  >
                     Logout
                   </button>
                 </div>
@@ -265,10 +301,10 @@ HeaderTopLine.propTypes = {
 };
 
 HeaderTopLine.defaultProps = {
-  className: '',
+  className: "",
   isShowStaking: false,
-  buttonText: 'SIGN IN',
-  linkText: 'Staking',
+  buttonText: "SIGN IN",
+  linkText: "Staking",
 };
 
 export default HeaderTopLine;

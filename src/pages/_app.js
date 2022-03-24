@@ -18,6 +18,7 @@ import {
   getIsLoading,
 } from "@selectors/global.selectors";
 import { getEnabledNetworkByChainId } from "@services/network.service";
+import digitalaxApi from "@services/api/espa/api.service";
 import getOrCreateStore from "../lib/with-redux-store";
 
 import config from "../utils/config";
@@ -55,7 +56,15 @@ const InitWrapper = (props) => {
       );
     };
 
+    const fetchPreData = async () => {
+      const designers = await digitalaxApi.getAllDesigners();
+      // const users = await digitalaxApi.getAllUsersName();
+      // dispatch(globalActions.setAllUsers(users));
+      dispatch(globalActions.setAllDesigners(designers.data));
+    };
+
     fetchMonaPerEth();
+    fetchPreData();
   }, []);
 
   if (!isInitialized) {
@@ -82,9 +91,16 @@ const LoadingWrapper = ({ children }) => {
   );
 };
 
-const MyApp = ({ Component, pageProps, store, err }) => {
+const MyApp = ({
+  Component,
+  pageProps,
+  store,
+  err,
+  designers,
+  users,
+  ...props
+}) => {
   const router = useRouter();
-
   if (err) {
     Sentry.captureException(err, {
       extra: {},
@@ -124,7 +140,16 @@ const MyApp = ({ Component, pageProps, store, err }) => {
   );
 };
 
-MyApp.getInitialProps = async () => {};
+MyApp.getInitialProps = async () => {
+  const designers = await digitalaxApi.getAllDesigners();
+  const users = await digitalaxApi.getAllUsersName();
+  console.log({ designers });
+  console.log({ users });
+  return {
+    designers,
+    users,
+  };
+};
 
 MyApp.propTypes = {
   Component: PropTypes.oneOfType([PropTypes.func, PropTypes.object]).isRequired,

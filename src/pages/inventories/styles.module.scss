@@ -3,10 +3,11 @@
   min-height: 600px;
 
   .loadingWrapper {
-    padding-top: 10rem;
+    padding-top: 2rem;
+    height: 400px;
     margin: auto;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
   }
 

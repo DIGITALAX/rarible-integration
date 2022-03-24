@@ -1,14 +1,15 @@
-@import '../../../assets/scss/helpers/grid.scss';
+@import "../../../assets/scss/helpers/grid.scss";
 
 .wrapper {
   background-color: black;
   min-height: 600px;
 
   .loadingWrapper {
-    padding-top: 10rem;
+    padding-top: 3rem;
     margin: auto;
     display: flex;
-    align-items: center;
+    height: 300px;
+    align-items: flex-start;
     justify-content: center;
   }
 

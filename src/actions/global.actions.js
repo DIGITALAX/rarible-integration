@@ -222,6 +222,12 @@ class GlobalActions extends BaseActions {
       dispatch(this.setValue("allUsers", values));
     };
   }
+
+  setAllDesigners(values) {
+    return (dispatch) => {
+      dispatch(this.setValue("allDesigners", values));
+    };
+  }
 }
 
 export default new GlobalActions(globalReducer);

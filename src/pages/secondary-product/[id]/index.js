@@ -211,8 +211,10 @@ const Product = ({ pageTitle }) => {
         setTotalAmount(collectionGroup.collections[0].garments.length);
       }
       setProduct({
-        bestSellOrder: res.bestSellOrder,
-        price: res.bestSellOrder?.makePrice,
+        ...res,
+        price: res.bestSellOrder?.makePrice
+          ? parseFloat(res.bestSellOrder?.makePrice)
+          : null,
         ...getRaribleNftDataFromMeta(res.meta),
         designer: designerData[0],
       });
@@ -317,8 +319,8 @@ const Product = ({ pageTitle }) => {
   const onMakeOffer = () => {
     dispatch(
       openMakeOfferModal({
-        contract: product.bestSellOrder.make.type.contract,
-        id: product.bestSellOrder.make.type.tokenId,
+        contract: product.contract,
+        id: product.tokenId,
       })
     );
   };
@@ -344,7 +346,7 @@ const Product = ({ pageTitle }) => {
   };
 
   const getPriceElement = () => {
-    if (typeof product.price !== "undefined") {
+    if (product.price) {
       return (
         <>
           {parseFloat(product.price).toFixed(2)}
@@ -422,7 +424,7 @@ const Product = ({ pageTitle }) => {
                 </div>
                 <div className={styles.infoWrapper}>
                   <div className={styles.leftSection}>
-                    <div className={styles.amount}>
+                    {/* <div className={styles.amount}>
                       {nftInfo?.trades.length} of {totalAmount}
                       <div className={styles.helper}>
                         <span className={styles.questionMark}>?</span>
@@ -431,7 +433,7 @@ const Product = ({ pageTitle }) => {
                           original source file.
                         </span>
                       </div>
-                    </div>
+                    </div> */}
 
                     <div className={styles.lovesWrapper}>
                       <button
@@ -497,9 +499,9 @@ const Product = ({ pageTitle }) => {
                         />
                       </div>
                       <div className={styles.buyWrapper}>
-                        {/* {product?.buyOrSell && ( */}
-                        <NewButton text="instant buy" onClick={onBuy} />
-                        {/* )} */}
+                        {product?.bestSellOrder && (
+                          <NewButton text="instant buy" onClick={onBuy} />
+                        )}
                         <NewButton text="make offer" onClick={onMakeOffer} />
                       </div>
                     </div>

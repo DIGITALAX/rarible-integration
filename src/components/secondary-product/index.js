@@ -189,12 +189,7 @@ const SecondaryProduct = () => {
         )}
       </div>
 
-      <OfferList
-        itemId={`${product.bestSellOrder?.make.type.contract.split(":")[1]}:${
-          product.bestSellOrder?.make.type.tokenId
-        }`}
-        orderId={product?.bestSellOrder?.id}
-      />
+      <OfferList itemId={id} orderId={product?.bestSellOrder?.id} />
     </div>
   );
 };

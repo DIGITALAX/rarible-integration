@@ -279,7 +279,8 @@ class BidActions extends BaseActions {
         const response = await fillResponse.submit({
           amount: 1,
         });
-        return response;
+        const tx = await response.wait();
+        return tx;
       } catch (e) {
         console.log({ e });
       }

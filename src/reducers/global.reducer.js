@@ -1,7 +1,7 @@
-import { createModule } from 'redux-modules';
-import cloneDeep from 'lodash.clonedeep';
-import { List, Map } from 'immutable';
-import TransformModules from '../utils/transform-modules';
+import { createModule } from "redux-modules";
+import cloneDeep from "lodash.clonedeep";
+import { List, Map } from "immutable";
+import TransformModules from "../utils/transform-modules";
 
 const DEFAULT_FIELDS = Map({
   isInitialized: false,
@@ -19,11 +19,12 @@ const DEFAULT_FIELDS = Map({
   dtxMaticIds: List([]),
   ethNfts: List([]),
   maticNfts: List([]),
-  allUsers: List([])
+  allDesigners: List([]),
+  allUsers: List([]),
 });
 
 export default createModule({
-  name: 'global',
+  name: "global",
   initialState: cloneDeep(DEFAULT_FIELDS),
   transformations: cloneDeep(TransformModules(DEFAULT_FIELDS)),
 });

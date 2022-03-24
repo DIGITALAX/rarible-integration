@@ -13,7 +13,7 @@ const AddSecondaryProduct = () => {
           subTitle="WEB3 FASHION INVENTORY"
           showHeroBar={false}
         />
-        <Link href="/manage-inventory">
+        <Link href="/inventories">
           <a className={styles.backBtn}>return to inventory</a>
         </Link>
         <div className={styles.description}>

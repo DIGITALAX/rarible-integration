@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import InfoCard from "@components/info-card";
 import ImageCard from "@components/image-card";
 import PriceCard from "@components/price-card";
 import NewButton from "@components/buttons/newbutton";
+import digitalaxApi from "@services/api/espa/api.service";
 import { useSelector } from "react-redux";
 import { getExchangeRateETH, getMonaPerEth } from "@selectors/global.selectors";
 import styles from "./styles.module.scss";
+import { getOrderBidsByItem } from "@services/api/rarible.service";
 
 const SecondaryInfoCard = ({
   product,
@@ -15,71 +17,70 @@ const SecondaryInfoCard = ({
 }) => {
   const monaPerEth = useSelector(getMonaPerEth);
   const exchangeRate = useSelector(getExchangeRateETH);
+  const [bidOrders, setBidOrders] = useState([]);
 
   if (!product) {
     return <></>;
   }
 
+  const fetchOrderBids = async () => {
+    const { orders } = await getOrderBidsByItem(product.id);
+    setBidOrders(orders);
+  };
+
+  const fetchSellerInfo = async () => {
+    const wallet = product.bestSellOrder.maker.split(":")[1];
+    const user = await digitalaxApi.getUserByWalletAddress(wallet);
+    console.log({ user });
+  };
+
+  useEffect(() => {
+    if (product) {
+      fetchOrderBids();
+      // if (product.bestSellOrder) {
+      //   fetchSellerInfo();
+      // }
+    }
+  }, [product]);
+
   const getPrice = () => {
-    if (product?.price) {
+    const price = product?.price ?? product?.bidPrice;
+    if (price) {
       return (
         <>
-          {`${product?.price} $MONA`}
+          {`${price} $MONA`}
           <span>
-            {` ($${(
-              parseFloat(monaPerEth) *
-              exchangeRate *
-              product?.price
-            ).toFixed(2)})
+            {` ($${(parseFloat(monaPerEth) * exchangeRate * price).toFixed(2)})
             `}
           </span>
         </>
       );
-    } else {
-      // const acceptedOffers = offers.filter((offer) =>
-      //   offer.executedTokenIds?.includes(product?.tokenId)
-      // );
-      // acceptedOffers.sort((offer1, offer2) => {
-      //   if (offer1.price < offer2.price) return 1;
-      //   if (offer1.price === offer2.price) return 0;
-      //   return -1;
-      // });
-      // if (acceptedOffers.length) {
-      //   return (
-      //     <>
-      //       {`${(acceptedOffers[0].price / 10 ** 18).toFixed(2)} $MONA`}
-      //       <span>
-      //         {` ($${(
-      //           (parseFloat(monaPerEth) *
-      //             exchangeRate *
-      //             acceptedOffers[0].price) /
-      //           10 ** 18
-      //         ).toFixed(2)})
-      //       `}
-      //       </span>
-      //     </>
-      //   );
-      // }
-      return (
-        <>
-          0.00 $MONA
-          <span>($0.00)</span>
-        </>
-      );
     }
+    return (
+      <>
+        0.00 $MONA
+        <span>($0.00)</span>
+      </>
+    );
   };
+
+  const generateLink = () => {
+    return `/secondary-product/${product?.contract.split(":")[1]}:${
+      product?.tokenId
+    }`;
+  };
+
   return (
     <div className={styles.productInfoCardwrapper}>
       <div className={styles.imageWrapper}>
         <ImageCard
           data={product.nftData}
           showDesigner
-          offerCount={0}
-          // offerCount={offers.length}
+          offerCount={bidOrders.length}
           showCollectionName={showCollectionName}
           showRarity={showRarity}
           showButton={false}
-          imgLink={`/secondary-product/${product?.id.replace("_", "-")}`}
+          imgLink={generateLink()}
           withLink
         />
       </div>
@@ -88,26 +89,14 @@ const SecondaryInfoCard = ({
           <div className={styles.infoWrapper}>
             <PriceCard
               mainText={getPrice()}
-              subText={
-                // order
-                //   ? !order?.executedTokenIds
-                //     ? "LIST PRICE"
-                //     : "LAST SALE PRICE"
-                //   : "HIGHEST BID"
-                "LIST PRICE"
-              }
+              subText={product?.price ? "LIST PRICE" : "HIGHEST BID"}
             />
             <div className={styles.linkWrapper}>
-              {product?.bestSellOrder && (
-                <Link href={`/secondary-product/${product?.id}`}>
-                  <a>
-                    <NewButton text="Instant Buy" />
-                  </a>
-                </Link>
-              )}
-              <Link href={`/secondary-product/${product?.id}`}>
+              <Link href={generateLink()}>
                 <a>
-                  <NewButton text="Make Offer" />
+                  <NewButton
+                    text={product?.bestSellOrder ? "Buy Now" : "Make Offer"}
+                  />
                 </a>
               </Link>
             </div>

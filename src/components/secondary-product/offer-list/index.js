@@ -2,24 +2,21 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import styles from "./styles.module.scss";
 import NewButton from "@components/buttons/newbutton";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import apiService from "@services/api/espa/api.service";
 import bidActions from "@actions/bid.actions";
 import {
   getActivitiesByItem,
   getOrderBidsByItem,
 } from "@services/api/rarible.service";
-import { getEnabledNetworkByChainId } from "@services/network.service";
-import { getChainId } from "@selectors/global.selectors";
+import globalActions from "@actions/global.actions";
+import { useRouter } from "next/router";
 
 const OfferList = ({ itemId }) => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const [offers, setOffers] = useState([]);
   const [users, setUsers] = useState([]);
-
-  // const onReject = () => {
-  //   dispatch(openRejectOfferModal());
-  // };
 
   useEffect(() => {
     const fetchOfferList = async () => {
@@ -45,14 +42,22 @@ const OfferList = ({ itemId }) => {
   }, [itemId]);
 
   const onAccept = (offer) => {
+    dispatch(globalActions.setIsLoading(true));
     dispatch(bidActions.secondaryAcceptBid(offer.id))
       .then((res) => {
+        dispatch(globalActions.setIsLoading(false));
+        router.push("/inventories");
         console.log({ res });
       })
       .catch((err) => {
+        dispatch(globalActions.setIsLoading(false));
         console.log({ err });
       });
   };
+
+  // const onReject = () => {
+  //   dispatch(openRejectOfferModal());
+  // };
 
   return (
     <div className={styles.wrapper}>
