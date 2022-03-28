@@ -143,8 +143,6 @@ const MyApp = ({
 MyApp.getInitialProps = async () => {
   const designers = await digitalaxApi.getAllDesigners();
   const users = await digitalaxApi.getAllUsersName();
-  console.log({ designers });
-  console.log({ users });
   return {
     designers,
     users,

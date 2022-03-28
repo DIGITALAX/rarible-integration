@@ -454,44 +454,13 @@ const Product = ({ pageTitle }) => {
     );
   };
 
-  // const isLookHakathon = () => {
-  //   return lookIds.includes(id);
-  // };
-
   if (!isFetchedProduct || !isFetchedSecondDesigners || !isFetchedViewCount) {
     return <ProductPageLoader />;
   }
 
   return (
     <>
-      <Head>
-        {/* <title key="title">{pageTitle}</title> */}
-        {/* <meta key="description" name="description" content={product?.garment?.description} />
-        <meta property="og:site_name" content={`Skin Product - {${product?.garment?.name}} - Digitalax`} />
-        <meta property="og:type" content="website" />
-        <meta
-          key="og:title"
-          property="og:title"
-          content={product?.garment?.name}
-        />
-        <meta
-          key="og:description"
-          property="og:description"
-          content={product?.garment?.description}
-        />
-        <meta
-          key="og:image"
-          property="og:image"
-          content={product?.garment?.image}
-        />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:image" content={product?.garment?.image} />
-        <meta name="twitter:title" content={product?.garment?.name} />
-        <meta name="twitter:description" content={product?.garment?.description} /> */}
-
-        {/* <meta property="og:url" content={} />
-        <meta name="twitter:url" content={} /> */}
-      </Head>
+      <Head></Head>
 
       <div className={styles.wrapper}>
         <section className={styles.mainSection}>
@@ -503,21 +472,15 @@ const Product = ({ pageTitle }) => {
               </div>
               <div className={styles.mainBody}>
                 <div className={styles.imageCardWrapper}>
-                  {/* {!isLookHakathon() ? ( */}
-
-                  {/* ) : ( */}
-                  {/* <div className={styles.lookTitle}>LOOK Hackathon</div> */}
-                  {/* )} */}
                   <ImageCard
                     data={product}
-                    price={(getPrice() / 10 ** 18).toFixed(2)}
+                    price={getPrice() / 10 ** 18}
                     isAuction={!!parseInt(isAuction)}
                     disable={
                       (parseInt(isAuction) === 1 &&
                         Date.now() > product.endTime * 1000) ||
                       offer?.amountSold >= offer?.totalAmount
                     }
-                    // showButton={!isLookHakathon()}
                   />
 
                   {!!product?.children?.length && (

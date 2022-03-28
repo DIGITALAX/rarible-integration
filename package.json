@@ -75,6 +75,7 @@
     "react-facebook-pixel": "^1.0.4",
     "react-image-magnify": "^2.7.4",
     "react-immutable-proptypes": "^2.2.0",
+    "react-infinite-scroll-component": "^6.1.0",
     "react-lazyload": "^3.2.0",
     "react-loading-overlay": "^1.0.1",
     "react-particles-js": "^3.5.3",

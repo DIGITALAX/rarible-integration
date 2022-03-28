@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import styles from './styles.module.scss';
+import React, { useState } from "react";
+import styles from "./styles.module.scss";
 
 const Filters = ({
   secondFilter = null,
+  type,
   secondFilterChange,
   filter,
   filterChange,
@@ -18,24 +19,29 @@ const Filters = ({
   const [currentSelectedSecondary, setCurrentSelectedSecondary] = useState(0);
 
   const filterItems = [
-    ' ',
-    ' most recent ',
-    ' highest price ',
-    ' lowest price ',
-    ' sold ',
-    ' auction ',
-    ' instant buy ',
-    ' exclusive rarity ',
-    ' semi-rare rarity ',
-    ' common rarity ',
+    " ",
+    " most recent ",
+    " highest price ",
+    " lowest price ",
+    " sold ",
+    " auction ",
+    " instant buy ",
+    " exclusive rarity ",
+    " semi-rare rarity ",
+    " common rarity ",
   ];
 
-  const types = ['', 'Primary', 'Secondary'];
+  const types = ["Primary", "Secondary"];
 
-  const secondary = ['', 'Live Listings', 'Offers On Your Items', 'Offers You Have Made'];
+  const secondary = [
+    "",
+    "Live Listings",
+    "Offers On Your Items",
+    "Offers You Have Made",
+  ];
 
   const onClickItem = (e) => {
-    const value = e.getAttribute('data-value');
+    const value = e.getAttribute("data-value");
     setCurrentSelectedIndex(value);
     sortByChange(value);
     setShowFilters(false);
@@ -55,7 +61,7 @@ const Filters = ({
                 }}
               >
                 <div className={styles.currentItem}>
-                  <span>{types[currentSelectedType]}</span>
+                  <span>{types[type]}</span>
                   <img
                     className={styles.arrowBottomImg}
                     src="./images/icons/arrow-bottom.svg"
@@ -69,9 +75,8 @@ const Filters = ({
                         key={index}
                         data-value={`${index}`}
                         onClick={(e) => {
-                          const value = e.target.getAttribute('data-value');
+                          const value = e.target.getAttribute("data-value");
                           setType(value);
-                          setCurrentSelectedType(value);
                           setShowTypeDown(false);
                         }}
                       >
@@ -121,7 +126,11 @@ const Filters = ({
               <ul className={showFilters ? styles.show : styles.hidden}>
                 {filterItems.map((item, index) => {
                   return (
-                    <li key={index} data-value={`${index}`} onClick={(e) => onClickItem(e.target)}>
+                    <li
+                      key={index}
+                      data-value={`${index}`}
+                      onClick={(e) => onClickItem(e.target)}
+                    >
                       {item}
                     </li>
                   );
@@ -174,7 +183,7 @@ const Filters = ({
                       key={index}
                       data-value={`${index}`}
                       onClick={(e) => {
-                        const value = e.target.getAttribute('data-value');
+                        const value = e.target.getAttribute("data-value");
                         secondFilterChange(value);
                         setCurrentSelectedSecondary(value);
                         setShowSecondary(false);

@@ -90,15 +90,14 @@ const Secondary = () => {
       <Container>
         {filteredNfts.length ? (
           <InfiniteScroll
-            dataLength={filteredNfts.length ?? 0}
+            dataLength={nfts.length ?? 0}
             next={fetchNfts}
-            hasMore={offset}
+            hasMore={nfts.length === filteredNfts.length ? false : offset}
             loader={
               <div className={styles.loadingWrapper}>
                 <PixelLoader title={"loading..."} />
               </div>
             }
-            endMessage={<h4>Nothing more to show</h4>}
           >
             <div className={styles.productsWrapper}>
               {filteredNfts?.map((nft) => {
@@ -114,7 +113,7 @@ const Secondary = () => {
             </div>
           </InfiniteScroll>
         ) : (
-          <h4>Nothing more to show</h4>
+          <h4>Nothing to show</h4>
         )}
       </Container>
       {/* )} */}

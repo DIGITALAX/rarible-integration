@@ -51,6 +51,9 @@
         color: white;
         font-size: 30px;
         line-height: 125%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
 
         font-family: Orbitron;
         font-style: normal;

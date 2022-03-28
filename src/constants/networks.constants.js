@@ -30,7 +30,7 @@ export const AVAILABLE_NETWORKS = [
     name: "Mumbai Test Network",
   },
   {
-    alias: "polygon",
+    alias: "matic",
     hex: 0x89,
     name: "Matic Main Network",
   },

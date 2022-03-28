@@ -114,7 +114,7 @@ class GlobalActions extends BaseActions {
 
       const web3Ethereum = new Web3Ethereum({ web3: window.web3 });
       const ethWallet = new EthereumWallet(web3Ethereum, Blockchain.POLYGON);
-      window.raribleSdk = createRaribleSdk(ethWallet, "staging");
+      window.raribleSdk = createRaribleSdk(ethWallet, "prod");
 
       dispatch(this.changeNetwork(ethereum.chainId));
       await dispatch(this.setContractParams());
